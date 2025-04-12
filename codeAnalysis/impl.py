@@ -1,3 +1,5 @@
+import json
+
 from github import Github
 from datetime import datetime
 import os
@@ -66,5 +68,7 @@ def scrape_github_user_info(username: str) -> dict:
 # Przykład użycia:
 if __name__ == "__main__":
     username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
-    print(scrape_github_user_info(username))
+    info = scrape_github_user_info(username)
 
+    with open("data.json", "w") as f:
+        json.dump(info, f, indent=4)
