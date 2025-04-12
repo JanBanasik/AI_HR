@@ -31,6 +31,9 @@ def scrape_github_user_info(username):
     print(f"- [ ] **Data dołączenia do GitHub:** {created_at.strftime('%Y-%m-%d')}")
 
 
+
+
+
 # Przykład użycia:
 if __name__ == "__main__":
     username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
