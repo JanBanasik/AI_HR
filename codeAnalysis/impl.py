@@ -127,3 +127,6 @@ if __name__ == "__main__":
             print("New commit in file:", file_change["filename"])
             print(file_change["code_diff"])
             print("-" * 40)
+
+
+""
