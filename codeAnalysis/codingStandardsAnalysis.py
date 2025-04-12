@@ -1,9 +1,20 @@
 import requests
 from impl import scrape_github_user_info
-from create_prompt import createPrompt
+from geminiModel import getResultsForGivenPrompt
+
+def createPrompt(commit) -> str:
+    return f"""
+    **Act as a Senior Software Engineer performing a code review.**  
+    Analyze the following code changes from GitHub commit in repository '{commit['repo']}' (Date: {commit['date']}):
+    Don't provide any updated versions of the code, just analyze it 
+    **Commit Message:**  
+    {commit['message']}
+
+    **Code Changes:**
+    {commit['code_diff']}"""
 
 
-commit = scrape_github_user_info("JanBanasik")
+commit_data = scrape_github_user_info("JanBanasik")  # Renamed variable
 
 url = "https://api.groq.com/openai/v1/chat/completions"
 headers = {
@@ -12,36 +23,22 @@ headers = {
 }
 
 evalsByLanguage = {}
-for key, value in commit["commits_by_language"].items():
-    scores = []
-    for commit in value:
-        prompt = createPrompt(commit)
-        data = {
-            "model": "llama3-8b-8192",
-            "messages": [{"role": "user", "content": f"{prompt}"}],
-            "temperature": 0.7
-        }
 
-        response = requests.post(url, headers=headers, json=data)
-        try:
-            scores.append(response.json()["choices"][0]["choice"])
-        except KeyError as e:
-            continue
+for lang, commits in commit_data["commits_by_language"].items():
+    scores = []
+    print(lang)
+    for commit in commits:
+        prompt = createPrompt(commit)
+        response = getResultsForGivenPrompt(prompt)
+
+        scores.append(response)
 
     res = '\n'.join(scores)
-    overallPrompt = f"Based on those scores, please evaulate the candidate in the realm of {key} programming language: {res}"
-    data = {
-        "model": "llama3-8b-8192",
-        "messages": [{"role": "user", "content": f"{overallPrompt}"}],
-        "temperature": 0.7
-    }
-
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        evalsByLanguage[key] = response.json()["choices"][0]["choice"]
-    except Exception as e:
-        print(f"Error for: {key} language")
-        print(e)
+    overallPrompt = f"Based on those scores, please evaluate the candidate in the realm of {lang} programming language: {res}"
+    overallResponse = getResultsForGivenPrompt(overallPrompt)
+    evalsByLanguage[lang] = overallResponse
 
 for language, evals in evalsByLanguage.items():
-    print(language, evals)
+    print(f"--- {language} ---")
+    print(evals)
+    print("\n")

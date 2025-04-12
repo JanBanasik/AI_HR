@@ -46,7 +46,7 @@ def extract_added_code(commit):
                     added_lines.append(line[1:])  # Remove the leading '+' character
     return "\n".join(added_lines)
 
-def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
+def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
     load_dotenv()
     GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
     g = Github(GITHUB_API_KEY)
