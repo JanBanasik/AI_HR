@@ -4,10 +4,10 @@ import requests
 
 from codeAnalysis.geminiModel import getResultsForGivenPrompt
 from impl import scrape_github_user_info
-from create_prompt import createPrompt
+from create_prompt import createPrompt, createOverallPrompt
 
 
-commit_data = scrape_github_user_info("JanBanasik")  # Renamed variable
+commit_data = scrape_github_user_info("antoniopater")  # Renamed variable
 
 url = "https://api.groq.com/openai/v1/chat/completions"
 headers = {
@@ -27,10 +27,10 @@ for lang, commits in commit_data["commits_by_language"].items():
         scores.append(response)
 
     res = '\n'.join(scores)
-    overallPrompt = f"Based on those scores, please evaluate the candidate in the realm of {lang} programming language: {res}"
+    overallPrompt = createOverallPrompt(lang, res)
     overallResponse = getResultsForGivenPrompt(overallPrompt)
     evalsByLanguage[lang] = overallResponse
-    time.sleep(10)
+    time.sleep(5)
 
 for language, evals in evalsByLanguage.items():
     print(f"--- {language} ---")

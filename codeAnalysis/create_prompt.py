@@ -12,3 +12,16 @@ def createPrompt(commit) -> str:
     **Code Changes:**
     {commit['code_diff']}."""
 
+def createOverallPrompt(lang, res):
+    overallPrompt = f"""
+    Based on those scores, please evaluate the candidate in the realm of \n
+{lang} \n
+programming language. Do not say, that the code is insufficient to make the review or mention it -- make in anyway.
+Quickly list weak and strong sides and at the end make an overall opionion.
+Here's the code: 
+{res}"""
+
+
+
+    return overallPrompt
+
