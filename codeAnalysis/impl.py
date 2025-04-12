@@ -136,7 +136,7 @@ def scrape_github_user_info(username: str, top_n: int = 10, months: int = 3) -> 
 
 # Example usage:
 if __name__ == "__main__":
-    username = "JanBanasik"  # Insert the GitHub username
+    username = "Kubapatimat"  # Insert the GitHub username
     # Retrieve commits only from the last 3 months
     info = scrape_github_user_info(username, top_n=10, months=3)
 
