@@ -4,14 +4,18 @@ from report_formatter import display_analysis
 import os
 import json
 
-if __name__ == "__main__":
+# 🔁 Lista identyfikatorów osób
+person_ids = ["person001", "person002"]
+
+for person_id in person_ids:
+    print(f"\n🔍 Starting analysis for {person_id}...")
+
     # 📂 Ścieżka do CSV z postami
-    csv_path = "generated_profiles/person001/posts.csv"
+    csv_path = f"generated_profiles/{person_id}/posts.csv"
 
     # 🧠 Inicjalizacja analizatora
     analyzer = GeminiAnalyzer(csv_path)
     output_dir = analyzer.get_output_dir()
-    person_id = analyzer.person_id
 
     # ✅ Analiza dopasowania do zespołu
     fit_score, classification, raw_fit = analyzer.analyze_team_fit()
@@ -69,3 +73,4 @@ if __name__ == "__main__":
         json.dump(json_output, f, indent=4, ensure_ascii=False)
 
     print(f"\n📁 JSON report saved to: {json_path}")
+    print(f"✅ Analysis completed for {person_id}")
