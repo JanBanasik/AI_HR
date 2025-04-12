@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes.user import router as user_router
+from app.routes import candidate
 app = FastAPI(title="HR Summarizer App")
 
 origins = [
@@ -17,4 +17,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(user_router)
+app.include_router(candidate.router)
