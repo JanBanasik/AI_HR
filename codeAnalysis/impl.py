@@ -122,13 +122,15 @@ def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
         'commits_by_language': dict(top_commits_by_lang)
     }
 
+
+
 # Przykład użycia:
 if __name__ == "__main__":
     username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
     info = scrape_github_user_info(username)
-    #
-    # with open("data.json", "w") as f:
-    #     json.dump(info, f, indent=4)
+
+    with open("data.json", "w") as f:
+        json.dump(info, f, indent=4)
 
     for lol in info["commits_by_language"]["Python"]:
-        print(lol["code_diff"])
+        print("New commit:", lol["code_diff"])
