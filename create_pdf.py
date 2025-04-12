@@ -112,29 +112,3 @@ def generate_pdf_report(person_info):
     pdf_output = "aesthetic_person_report.pdf"
     pdf.output(pdf_output)
     return pdf_output
-
-
-# Example JSON data input containing Twitter and GitHub sections
-person_info = {
-    "Twitter": {
-        "Handle": "@exampleUser",
-        "Tweet": "This is a sample *bold* tweet text showing *emphasis* on certain words."
-    },
-    "GitHub": {
-        "Python": "The candidate demonstrates *basic* proficiency. However, there are issues with *testing* and *error handling*.",
-        "JavaScript": "The review indicates the use of *callbacks* over modern techniques like *promises*."
-    },
-    "person_id": "person001",
-    "fit_score": -1.0,
-    "classification": "Negative",
-    "stability_score": 0.2,
-    "aggression_score": 0.9,
-    "political_score": 1.0,
-    "controversial_score": 0.9,
-    "political_explanation": "The aggressive language on social platforms has created a hostile work environment.",
-    "summary": "This individual is often dismissive and exhibits a strong *individualistic* style with little tolerance for differing viewpoints."
-}
-
-# Generate the PDF report and save it
-pdf_path = generate_pdf_report(person_info)
-print(f"PDF report generated at: {pdf_path}")

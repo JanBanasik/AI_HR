@@ -65,6 +65,7 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
 
     for repo in user.get_repos():
         commits = repo.get_commits(author=username)
+        commits = commits[:100]
         if not commits:
             continue
         for commit in commits:
@@ -83,9 +84,9 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
                         continue
 
                     lines = code_diff.splitlines()
-                    if len(lines) > 200:
-                        code_diff = "\n".join(lines[:200])
-                        lines = lines[:200]
+                    if len(lines) > 100:
+                        code_diff = "\n".join(lines[:100])
+                        lines = lines[:100]
 
                     commit_data = {
                         'sha': commit.sha,

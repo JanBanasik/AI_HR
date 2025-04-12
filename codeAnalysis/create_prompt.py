@@ -17,7 +17,7 @@ def createOverallPrompt(lang, res):
     Based on those scores, please evaluate the candidate in the realm of \n
 {lang} \n
 programming language. DO NOT SAY, that the provided code is insufficient to make the review or mention it anyhow -- make the opinion anyway.
-Quickly list weak and strong sides and at the end make an overall opionion.
+Quickly list weak and strong sides and at the end make an overall opinion. Your description SHOULD NOT be excessive -- one short sentence per each pros or cons and 2, 3 sentence of summary.
 Here's the code: 
 {res}"""
 
