@@ -1,4 +1,3 @@
-from itertools import islice
 from github import Github
 import os
 import json
