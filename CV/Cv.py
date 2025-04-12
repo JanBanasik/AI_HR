@@ -25,6 +25,7 @@ def extract_text_from_pdf(pdf_path):
 
 # === Wygeneruj JSON z Gemini ===
 def get_summary_as_json(cv_text):
+    configure_gemini()
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = (

@@ -2,7 +2,6 @@ import json
 import os
 import google.generativeai as genai
 import matplotlib.pyplot as plt
-import imageio.v2 as imageio
 from dotenv import load_dotenv
 
 
