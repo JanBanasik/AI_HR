@@ -1,5 +1,4 @@
 import json
-
 from codeAnalysis.getCodeReview import getResultsForGivenUserName
 from X.main import getPersonSentimentEvaluation
 import os
