@@ -27,7 +27,7 @@ def getResultsForGivenUserName(username: str, file_path) -> None:
         time.sleep(5)
 
     # Check if the JSON file already exists
-
+    file_path = os.path.join(file_path, "results.json")
     if os.path.exists(file_path):
         # Load the existing data from the file
         with open(file_path, 'r') as f:
@@ -38,6 +38,7 @@ def getResultsForGivenUserName(username: str, file_path) -> None:
 
     # Add the new evaluations under the "GitHub" key
     data['GitHub'] = evalsByLanguage
+
 
     # Save the updated data back to the JSON file
     with open(file_path, 'w') as f:

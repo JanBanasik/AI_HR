@@ -3,13 +3,13 @@ from X.main import getPersonSentimentEvaluation
 import os
 
 
-def mergeResults(githubUsername="Kubapatimat", twitterId="person001"):
-    if not os.path.exists("data/"):
-        os.makedirs("data/")
+def mergeResults(githubUsername="Kubapatimat", twitterId="person001", personName="Jakub Halfar"):
+    if not os.path.exists(f"data/{personName}/"):
+        os.makedirs(f"data/{personName}/")
 
-    outputJson = f"data/evaluation.json"
+    outputJson = f"data/{personName}/"
 
-    twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId)
+    twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
     getResultsForGivenUserName(githubUsername, outputJson)
 
 

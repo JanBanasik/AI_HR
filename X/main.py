@@ -8,7 +8,7 @@ import json
 #person_ids = ["person001", "person002"]
 
 
-def getPersonSentimentEvaluation(person_id):
+def getPersonSentimentEvaluation(person_id, output_dir):
     print(f"\n🔍 Starting analysis for {person_id}...")
 
     # 📂 Ścieżka do CSV z postami
@@ -16,7 +16,7 @@ def getPersonSentimentEvaluation(person_id):
 
     # 🧠 Inicjalizacja analizatora
     analyzer = GeminiAnalyzer(csv_path)
-    output_dir = "data"
+
 
     # ✅ Analiza dopasowania do zespołu
     fit_score, classification, raw_fit = analyzer.analyze_team_fit()
