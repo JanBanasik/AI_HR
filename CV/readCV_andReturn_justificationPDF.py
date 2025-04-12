@@ -1,5 +1,4 @@
 import os
-
 from CV.Cv import extract_text_from_pdf, get_summary_as_json, save_to_json
 from CV.comparison import CVJobComparator
 

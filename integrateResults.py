@@ -4,7 +4,7 @@ from X.main import getPersonSentimentEvaluation
 import os
 from create_pdf import generate_pdf_report
 from CV.readCV_andReturn_justificationPDF import getResultsForPDFFile
-
+from candidate_missing_features import get_missing_features
 
 def mergeResults(githubUsername, twitterId, personName="Unnamed"):
     if not os.path.exists(f"data/{personName}/"):
@@ -13,8 +13,12 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed"):
     outputJson = f"data/{personName}/"
 
     score, justification = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson)
+    # TODO:
+    missingFeatures = get_missing_features(justification, "CV/example.json")
+    print(missingFeatures)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
     getResultsForGivenUserName(githubUsername, outputJson)
+
 
 
 
