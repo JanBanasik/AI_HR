@@ -1,5 +1,4 @@
 from itertools import islice
-
 from github import Github
 from datetime import datetime
 import os
@@ -32,23 +31,18 @@ def get_language_from_filename(filename):
     _, ext = os.path.splitext(filename)
     return EXTENSION_LANG_MAP.get(ext, None)  # Return None if not a recognized code file
 
-def extract_added_code(commit):
+def extract_added_code_from_patch(patch):
     """
-    Extracts only the added code lines (ignoring deleted fragments, context, and diff headers)
-    from all code files in a commit.
+    Extracts added lines (ignoring context and headers) from a given file patch.
     """
     added_lines = []
-    for f in commit.files:
-        # Ensure the file has a patch available (patches may be None for binary or large files)
-        if f.patch:
-            for line in f.patch.splitlines():
-                # Only include lines that are additions:
-                # Skip lines that are diff headers (which begin with "+++")
-                if line.startswith('+') and not line.startswith('+++'):
-                    added_lines.append(line[1:])  # Remove the leading '+' character
-    return "\n".join(added_lines)
+    for line in patch.splitlines():
+        # Only include lines that are additions (skip diff headers starting with '+++')
+        if line.startswith('+') and not line.startswith('+++'):
+            added_lines.append(line[1:])  # Remove the leading '+' character
+    return "\n".join(added_lines) if added_lines else None
 
-def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
+def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
     load_dotenv()
     GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
     g = Github(GITHUB_API_KEY)
@@ -66,7 +60,7 @@ def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
         'created_at': user.created_at.strftime('%Y-%m-%d') if user.created_at else None
     }
 
-    # Temporary storage for commits grouped by language
+    # Temporary storage for commit file changes grouped by language
     commits_by_language = defaultdict(list)
 
     # Iterate over the user's repositories and fetch commits
@@ -76,63 +70,54 @@ def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
             commits = list(islice(repo.get_commits(author=username), 5))
         except Exception:
             continue  # Skip repositories that are inaccessible or empty
-        print(commits)
+
         for commit in commits:
             try:
-                # Determine if the commit contains code changes, based on file extensions
-                commit_langs = set()
+                # Process each file within the commit individually
                 for f in commit.files:
                     lang = get_language_from_filename(f.filename)
-                    if lang:
-                        commit_langs.add(lang)
-                # If no code files were changed, skip this commit
-                if not commit_langs:
-                    continue
+                    if not lang or not f.patch:
+                        continue  # Skip if file is not recognized or has no patch
 
-                # Extract only new changes from the commit (ignoring deletions)
-                code_diff = extract_added_code(commit)
+                    code_diff = extract_added_code_from_patch(f.patch)
+                    if code_diff is None:
+                        continue
 
-                commit_data = {
-                    'sha': commit.sha,
-                    'message': commit.commit.message.split('\n')[0].strip(),
-                    'repo': repo.name,
-                    'date': commit.commit.author.date.isoformat(),
-                    'code_diff': code_diff
-                }
-
-                # Save commit data under every detected language
-                for lang in commit_langs:
+                    commit_data = {
+                        'sha': commit.sha,
+                        'message': commit.commit.message.split('\n')[0].strip(),
+                        'repo': repo.name,
+                        'date': commit.commit.author.date.isoformat(),
+                        'filename': f.filename,
+                        'code_diff': code_diff
+                    }
+                    # Store the commit data under the detected language
                     commits_by_language[lang].append(commit_data)
-
             except Exception:
-                continue  # Skip this commit if any error occurs
+                continue  # Skip processing this commit if any error occurs
 
-    # Flatten and sort commits from all languages by date (most recent first)
-    all_commits = []
+    # For each language, sort its commits by date (most recent first) and keep only the top_n commits
+    top_commits_by_lang = {}
     for lang, commits in commits_by_language.items():
-        for commit in commits:
-            all_commits.append((lang, commit))
-    all_commits.sort(key=lambda x: x[1]['date'], reverse=True)
-
-    # Gather only the top N overall commits and re-group them by language
-    top_commits_by_lang = defaultdict(list)
-    for lang, commit in all_commits[:top_n]:
-        top_commits_by_lang[lang].append(commit)
+        sorted_commits = sorted(commits, key=lambda x: x['date'], reverse=True)
+        top_commits_by_lang[lang] = sorted_commits[:top_n]
 
     return {
         'user_info': user_info,
-        'commits_by_language': dict(top_commits_by_lang)
+        'commits_by_language': top_commits_by_lang
     }
 
-
-
-# Przykład użycia:
+# Example usage:
 if __name__ == "__main__":
-    username = "antoniopater"  # Wstaw nazwę użytkownika GitHub
+    username = "jaanonim"  # Insert the GitHub username
     info = scrape_github_user_info(username)
 
     with open("data.json", "w") as f:
         json.dump(info, f, indent=4)
 
-    for lol in info["commits_by_language"]["Python"]:
-        print("New commit:", lol["code_diff"])
+    # For demonstration, print out code diffs for Python files
+    if "Python" in info["commits_by_language"]:
+        for file_change in info["commits_by_language"]["Python"]:
+            print("New commit in file:", file_change["filename"])
+            print(file_change["code_diff"])
+            print("-" * 40)

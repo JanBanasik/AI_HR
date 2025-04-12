@@ -1,9 +1,11 @@
 import requests
+
+from codeAnalysis.geminiModel import getResultsForGivenPrompt
 from impl import scrape_github_user_info
 from create_prompt import createPrompt
 
 
-commit_data = scrape_github_user_info("antoniopater")  # Renamed variable
+commit_data = scrape_github_user_info("jaanonim")  # Renamed variable
 
 url = "https://api.groq.com/openai/v1/chat/completions"
 headers = {
@@ -16,7 +18,6 @@ evalsByLanguage = {}
 for lang, commits in commit_data["commits_by_language"].items():
     scores = []
     print(lang)
-    print(commits)
     for commit in commits:
         prompt = createPrompt(commit)
         response = getResultsForGivenPrompt(prompt)
