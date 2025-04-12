@@ -1,17 +1,6 @@
 import requests
 from impl import scrape_github_user_info
-from geminiModel import getResultsForGivenPrompt
-
-def createPrompt(commit) -> str:
-    return f"""
-    **Act as a Senior Software Engineer performing a code review.**  
-    Analyze the following code changes from GitHub commit in repository '{commit['repo']}' (Date: {commit['date']}):
-    Don't provide any updated versions of the code, just analyze it 
-    **Commit Message:**  
-    {commit['message']}
-
-    **Code Changes:**
-    {commit['code_diff']}"""
+from create_prompt import createPrompt
 
 
 commit_data = scrape_github_user_info("JanBanasik")  # Renamed variable
