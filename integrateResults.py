@@ -12,9 +12,10 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed"):
 
     outputJson = f"data/{personName}/"
 
-    cvAnalysis = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson)
+    score, justification = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
     getResultsForGivenUserName(githubUsername, outputJson)
+
 
 
 if __name__ == "__main__":

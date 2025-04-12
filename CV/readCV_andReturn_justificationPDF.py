@@ -11,3 +11,4 @@ def getResultsForPDFFile(pdf_path, output_path):
     save_to_json(summary, output_path)
     comparator = CVJobComparator(output_path, os.path.join("CV/", "example.json"))
     score, justification = comparator.compare()
+    return score, justification
