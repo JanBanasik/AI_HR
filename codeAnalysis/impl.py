@@ -1,6 +1,6 @@
 from itertools import islice
 from github import Github
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import json
 from dotenv import load_dotenv
@@ -27,9 +27,11 @@ EXTENSION_LANG_MAP = {
     '.pl': 'Perl',
 }
 
+
 def get_language_from_filename(filename):
     _, ext = os.path.splitext(filename)
     return EXTENSION_LANG_MAP.get(ext, None)  # Return None if not a recognized code file
+
 
 def extract_added_code_from_patch(patch):
     """
@@ -42,11 +44,24 @@ def extract_added_code_from_patch(patch):
             added_lines.append(line[1:])  # Remove the leading '+' character
     return "\n".join(added_lines) if added_lines else None
 
-def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
+
+def scrape_github_user_info(username: str, top_n: int = 10, months: int = 3) -> dict:
+    """
+    Scrapes GitHub user information and commit file changes from the last `months` months,
+    trimming each commit's code diff to at most 200 lines.
+
+    Parameters:
+        username (str): GitHub username.
+        top_n (int): Number of recent commits per language to include.
+        months (int): Only consider commits from the past `months` months.
+    """
     load_dotenv()
     GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
     g = Github(GITHUB_API_KEY)
     user = g.get_user(username)
+
+    # Calculate the threshold date by approximating one month as 30 days
+    threshold_date = datetime.utcnow() - timedelta(days=months * 30)
 
     # Collect basic user information
     user_info = {
@@ -73,6 +88,12 @@ def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
 
         for commit in commits:
             try:
+                # Convert commit author date for comparison
+                commit_date = commit.commit.author.date
+                # Check if the commit is within the last `months` months
+                if commit_date < threshold_date:
+                    continue
+
                 # Process each file within the commit individually
                 for f in commit.files:
                     lang = get_language_from_filename(f.filename)
@@ -83,11 +104,16 @@ def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
                     if code_diff is None:
                         continue
 
+                    # Trim the code diff to at most 200 lines
+                    lines = code_diff.splitlines()
+                    if len(lines) > 200:
+                        code_diff = "\n".join(lines[:200])
+
                     commit_data = {
                         'sha': commit.sha,
                         'message': commit.commit.message.split('\n')[0].strip(),
                         'repo': repo.name,
-                        'date': commit.commit.author.date.isoformat(),
+                        'date': commit_date.isoformat(),
                         'filename': f.filename,
                         'code_diff': code_diff
                     }
@@ -107,10 +133,12 @@ def scrape_github_user_info(username: str, top_n: int = 10) -> dict:
         'commits_by_language': top_commits_by_lang
     }
 
+
 # Example usage:
 if __name__ == "__main__":
-    username = "jaanonim"  # Insert the GitHub username
-    info = scrape_github_user_info(username)
+    username = "JanBanasik"  # Insert the GitHub username
+    # Retrieve commits only from the last 3 months
+    info = scrape_github_user_info(username, top_n=10, months=3)
 
     with open("data.json", "w") as f:
         json.dump(info, f, indent=4)
