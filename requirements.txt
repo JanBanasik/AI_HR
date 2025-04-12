@@ -8,8 +8,6 @@ rich>=13.0.0
 
 
 
-
-
 requests==2.32.2
 PyGithub~=2.6.1
 pylint==3.1.0
@@ -19,7 +17,7 @@ google-generativeai==0.8.4
 dotenv~=0.9.9
 python-dotenv~=1.1.0
 protobuf~=5.29.4
-fpdf~=1.7.2
+fpdf2>=2.7.7
 fitz~=0.0.1.dev2
 imageio~=2.37.0
 github~=1.2.7

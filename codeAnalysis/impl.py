@@ -65,7 +65,13 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
 
     for repo in user.get_repos():
         commits = repo.get_commits(author=username)
-        commits = commits[:100]
+        commits = list(commits)
+        if len(commits) >= 2:
+            commits = commits[:min(99, len(commits) - 1)]
+        else:
+            commits = []
+
+
         if not commits:
             continue
         for commit in commits:
