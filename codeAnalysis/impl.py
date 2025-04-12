@@ -4,7 +4,6 @@ import os
 
 def scrape_github_user_info(username: str) -> dict:
     GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
-    print(GITHUB_API_KEY)
     g = Github(GITHUB_API_KEY)
     user = g.get_user(username)
 
