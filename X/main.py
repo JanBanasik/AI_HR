@@ -71,7 +71,7 @@ def getPersonSentimentEvaluation(person_id, output_dir):
         "summary": summary
     }
 
-    json_path = os.path.join(output_dir, f"{person_id}.json")
+    json_path = os.path.join(output_dir, f"X.json")
     with open(json_path, "w") as f:
         json.dump(json_output, f, indent=4, ensure_ascii=False)
 
