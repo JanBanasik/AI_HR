@@ -2,11 +2,11 @@ import time
 import json
 import os
 from codeAnalysis.geminiModel import getResultsForGivenPrompt
-from impl import scrape_github_user_info
-from create_prompt import createPrompt, createOverallPrompt
+from codeAnalysis.impl import scrape_github_user_info
+from codeAnalysis.create_prompt import createPrompt, createOverallPrompt
 
 
-def getResultsForGivenUserName(username: str) -> None:
+def getResultsForGivenUserName(username: str, file_path) -> None:
     commit_data = scrape_github_user_info(username)  # Renamed variable
 
     evalsByLanguage = {}
@@ -27,7 +27,7 @@ def getResultsForGivenUserName(username: str) -> None:
         time.sleep(5)
 
     # Check if the JSON file already exists
-    file_path = f'{username}_review.json'
+
     if os.path.exists(file_path):
         # Load the existing data from the file
         with open(file_path, 'r') as f:
