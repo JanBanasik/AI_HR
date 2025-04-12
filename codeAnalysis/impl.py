@@ -6,6 +6,8 @@ import json
 from dotenv import load_dotenv
 from collections import defaultdict
 
+from networkx.classes import is_empty
+
 # Basic mapping from file extensions to programming languages
 EXTENSION_LANG_MAP = {
     '.py': 'Python',
@@ -63,11 +65,13 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
     commits_by_language = defaultdict(list)
 
     for repo in user.get_repos():
-        try:
-            commits = list(islice(repo.get_commits(author=username), 5))
-        except Exception:
+        # try:
+        #     commits = list(islice(repo.get_commits(author=username), top_n))
+        # except Exception:
+        #     continue
+        commits = repo.get_commits(author=username)
+        if not repo.get_commits(author=username):
             continue
-
         for commit in commits:
             try:
                 commit_date = commit.commit.author.date
@@ -116,7 +120,7 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
 
 # Example usage
 if __name__ == "__main__":
-    username = "Kubapatimat"
+    username = "JanBanasik"
     info = scrape_github_user_info(username, top_n=10, months=3)
 
     with open("data.json", "w") as f:
