@@ -1,3 +1,5 @@
+from itertools import islice
+
 from github import Github
 from datetime import datetime
 import os
@@ -71,10 +73,10 @@ def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
     for repo in user.get_repos():
         try:
             # Fetch a few recent commits authored by the user in this repository
-            commits = repo.get_commits(author=username)[:5]
+            commits = list(islice(repo.get_commits(author=username), 5))
         except Exception:
             continue  # Skip repositories that are inaccessible or empty
-
+        print(commits)
         for commit in commits:
             try:
                 # Determine if the commit contains code changes, based on file extensions
@@ -126,7 +128,7 @@ def scrape_github_user_info(username: str, top_n: int = 3) -> dict:
 
 # Przykład użycia:
 if __name__ == "__main__":
-    username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
+    username = "antoniopater"  # Wstaw nazwę użytkownika GitHub
     info = scrape_github_user_info(username)
 
     with open("data.json", "w") as f:

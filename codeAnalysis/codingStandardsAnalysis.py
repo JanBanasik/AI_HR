@@ -14,7 +14,7 @@ def createPrompt(commit) -> str:
     {commit['code_diff']}"""
 
 
-commit_data = scrape_github_user_info("JanBanasik")  # Renamed variable
+commit_data = scrape_github_user_info("antoniopater")  # Renamed variable
 
 url = "https://api.groq.com/openai/v1/chat/completions"
 headers = {
@@ -27,6 +27,7 @@ evalsByLanguage = {}
 for lang, commits in commit_data["commits_by_language"].items():
     scores = []
     print(lang)
+    print(commits)
     for commit in commits:
         prompt = createPrompt(commit)
         response = getResultsForGivenPrompt(prompt)
