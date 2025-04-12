@@ -64,12 +64,12 @@ def save_to_json(text, output_path="cv_summary.json"):
         data = json.loads(text)
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"✅ JSON zapisany do {output_path}")
+        # print(f"✅ JSON zapisany do {output_path}")
     except json.JSONDecodeError as e:
-        print("⚠️ Odpowiedź nie jest poprawnym JSON-em:")
+        # print("⚠️ Odpowiedź nie jest poprawnym JSON-em:")
         print(e)
-        print("\nOryginalna treść odpowiedzi:\n")
-        print(text)
+        # print("\nOryginalna treść odpowiedzi:\n")
+        # print(text)
 
 
 # === Główna funkcja ===

@@ -7,8 +7,7 @@ from create_pdf import generate_pdf_report
 from CV.readCV_andReturn_justificationPDF import getResultsForPDFFile
 
 
-def mergeResults(githubUsername, twitterId, personName = "Unnamed"):
-
+def mergeResults(githubUsername, twitterId, personName="Unnamed"):
     if not os.path.exists(f"data/{personName}/"):
         os.makedirs(f"data/{personName}/")
 
@@ -17,7 +16,6 @@ def mergeResults(githubUsername, twitterId, personName = "Unnamed"):
     cvAnalysis = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
     getResultsForGivenUserName(githubUsername, outputJson)
-
 
 
 if __name__ == "__main__":
@@ -32,4 +30,3 @@ if __name__ == "__main__":
         cv_info = json.load(f3)
 
     generate_pdf_report(twitter_info, github_info, cv_info)
-
