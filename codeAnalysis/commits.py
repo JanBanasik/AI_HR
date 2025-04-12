@@ -3,6 +3,7 @@ from github import Github
 from git import Repo
 import subprocess
 
+
 # Ustaw token (opcjonalnie, ale zalecane)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # lub wpisz na sztywno
 g = Github(GITHUB_TOKEN) if GITHUB_TOKEN else Github()
