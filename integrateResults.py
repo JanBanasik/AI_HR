@@ -15,3 +15,4 @@ def mergeResults(githubUsername="Kubapatimat", twitterId="person001", personName
 
 if __name__ == "__main__":
     mergeResults(githubUsername="Kubapatimat", twitterId="person001")
+
