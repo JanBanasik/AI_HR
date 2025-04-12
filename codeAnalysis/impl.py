@@ -1,12 +1,10 @@
 from github import Github
 from datetime import datetime
 import os
-from dotenv import load_dotenv
-import json
-def scrape_github_user_info(username: str) -> dict:
-    load_dotenv()
-    GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
 
+def scrape_github_user_info(username: str) -> dict:
+    GITHUB_API_KEY = os.getenv("GITHUB_API_KEY")
+    print(GITHUB_API_KEY)
     g = Github(GITHUB_API_KEY)
     user = g.get_user(username)
 
@@ -48,6 +46,7 @@ def scrape_github_user_info(username: str) -> dict:
                 'date': commit_date.isoformat() if commit_date else None
             }
             commits_by_language[lang].append(commit_data)
+
     # Sort commits by date within each language and keep top 5
     for lang in commits_by_language:
         # Sort commits in descending order of date
@@ -67,8 +66,5 @@ def scrape_github_user_info(username: str) -> dict:
 # Przykład użycia:
 if __name__ == "__main__":
     username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
-    info = scrape_github_user_info(username)
-
-    with open('data.json', 'w') as f:
-        json.dump(info, f, indent=4)
+    print(scrape_github_user_info(username))
 
