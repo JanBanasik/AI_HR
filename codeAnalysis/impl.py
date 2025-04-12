@@ -1,12 +1,10 @@
 from itertools import islice
 from github import Github
-from datetime import datetime, timedelta
 import os
 import json
 from dotenv import load_dotenv
 from collections import defaultdict
-
-from networkx.classes import is_empty
+import time
 
 # Basic mapping from file extensions to programming languages
 EXTENSION_LANG_MAP = {
@@ -49,7 +47,9 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
     g = Github(GITHUB_API_KEY)
     user = g.get_user(username)
 
-    threshold_date = datetime.utcnow() - timedelta(days=months * 30)
+    # Calculate threshold timestamp for months
+    current_time = time.time()
+    threshold_timestamp = current_time - (months * 30 * 24 * 60 * 60)  # convert months to seconds
 
     user_info = {
         'login': user.login,
@@ -59,23 +59,19 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
         'public_repos': user.public_repos,
         'followers': user.followers,
         'following': user.following,
-        'created_at': user.created_at.strftime('%Y-%m-%d') if user.created_at else None
+        'created_at': user.created_at.isoformat() if user.created_at else None
     }
 
     commits_by_language = defaultdict(list)
 
     for repo in user.get_repos():
-        # try:
-        #     commits = list(islice(repo.get_commits(author=username), top_n))
-        # except Exception:
-        #     continue
         commits = repo.get_commits(author=username)
-        if not repo.get_commits(author=username):
+        if not commits:
             continue
         for commit in commits:
             try:
-                commit_date = commit.commit.author.date
-                if commit_date < threshold_date:
+                commit_timestamp = commit.commit.author.date.timestamp()  # Convert to UNIX timestamp
+                if commit_timestamp < threshold_timestamp:
                     continue
 
                 for f in commit.files:
@@ -96,7 +92,7 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
                         'sha': commit.sha,
                         'message': commit.commit.message.split('\n')[0].strip(),
                         'repo': repo.name,
-                        'date': commit_date.isoformat(),
+                        'date': commit.commit.author.date.isoformat(),
                         'filename': f.filename,
                         'code_diff': code_diff,
                         'line_count': len(lines)
@@ -120,7 +116,7 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
 
 # Example usage
 if __name__ == "__main__":
-    username = "JanBanasik"
+    username = "Kubapatimat"
     info = scrape_github_user_info(username, top_n=10, months=3)
 
     with open("data.json", "w") as f:
@@ -131,4 +127,3 @@ if __name__ == "__main__":
             print("New commit in file:", file_change["filename"])
             print(file_change["code_diff"])
             print("-" * 40)
-
