@@ -1,36 +1,37 @@
 import os
-import requests
-import subprocess
 from github import Github
-from git import Repo
 
-g = Github()
+# Ustaw token (opcjonalnie, ale zalecane)
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # lub wpisz na sztywno
+g = Github(GITHUB_TOKEN) if GITHUB_TOKEN else Github()
 
 
-def scrape_github_user(username, top_n=3, clone_dir="cloned_repos"):
-    clone_dir = f"{username}_repos"
+def scrape_github_user_info(username):
     user = g.get_user(username)
-    print(f"📄 Nazwa: {user.name}")
-    print(f"👥 Followers: {user.followers}")
-    print(f"📦 Repozytoria publiczne: {user.public_repos}")
 
-    # Sortuj repozytoria po liczbie gwiazdek
-    repos = sorted(user.get_repos(), key=lambda r: r.stargazers_count, reverse=True)
+    # Pobranie wymaganych danych
+    login = user.login
+    bio = user.bio
+    location = user.location
+    avatar_url = user.avatar_url
+    public_repos = user.public_repos
+    followers = user.followers
+    following = user.following
+    created_at = user.created_at
 
-    os.makedirs(clone_dir, exist_ok=True)
-    cloned_paths = []
+    # Formatowanie wyników
+    print("### Pobranie danych z GitHub API:")
+    print(f"- [ ] **Login:** {login}")
+    print(f"- [ ] **Bio:** {bio if bio else 'Brak bio'}")
+    print(f"- [ ] **Lokalizacja:** {location if location else 'Brak lokalizacji'}")
+    print(f"- [ ] **Avatar URL:** {avatar_url}")
+    print(f"- [ ] **Liczba repozytoriów:** {public_repos}")
+    print(f"- [ ] **Liczba obserwujących:** {followers}")
+    print(f"- [ ] **Liczba obserwowanych:** {following}")
+    print(f"- [ ] **Data dołączenia do GitHub:** {created_at.strftime('%Y-%m-%d')}")
 
-    for repo in repos[:top_n]:
-        print(f"🚀 Klonuję: {repo.full_name} ({repo.stargazers_count} ⭐)")
-        repo_dir = os.path.join(clone_dir, repo.name)
-        if not os.path.exists(repo_dir):
-            Repo.clone_from(repo.clone_url, repo_dir)
-        cloned_paths.append(repo_dir)
 
-    return cloned_paths  # Zwraca ścieżki do lokalnych repozytoriów
-
-
+# Przykład użycia:
 if __name__ == "__main__":
-    username = "FilipBaciak"  # albo kandydat z inputa
-    paths = scrape_github_user(username)
-    print("📁 Skopiowano repozytoria do:", paths)
+    username = "JanBanasik"  # Wstaw nazwę użytkownika GitHub
+    scrape_github_user_info(username)
