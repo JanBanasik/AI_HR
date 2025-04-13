@@ -60,7 +60,7 @@ class PDFReport(FPDF):
             self.chapter_body(content)
 
 
-def generate_pdf_report(eval_info, github_reviews, resume_info):
+def generate_pdf_report(eval_info, github_reviews, resume_info, justification, match_score_path):
     """
     Generates an aesthetically pleasing PDF report combining:
      - Evaluation info (scores, classification, explanations, summary)
@@ -76,12 +76,26 @@ def generate_pdf_report(eval_info, github_reviews, resume_info):
     # Section: Evaluation & Scores
     # ============================
     details = []
-    for key in ['person_id', 'fit_score', 'classification', 'stability_score',
+    name = "name"
+    details.append(f"{name.replace('_', ' ').title()}: {resume_info['name']}")
+    for key in ['fit_score', 'classification', 'stability_score',
                 'aggression_score', 'political_score', 'controversial_score']:
         if key in eval_info:
             details.append(f"{key.replace('_', ' ').title()}: {eval_info[key]}")
     if details:
         pdf.add_section("Evaluation Details", "\n".join(details))
+
+    pdf.add_section("Resume fitting justification", justification["justification"])
+
+    x = 10  # x position
+    w = 100  # width
+    h = 0  # height (0 means auto-calculate to maintain aspect ratio)
+    image_width = 60
+    page_width = pdf.w - 2 * pdf.l_margin  # Effective page width
+    x_position = (page_width - image_width) / 2 + pdf.l_margin
+    pdf.image(match_score_path, x=x_position, y=pdf.get_y() + 5, w = image_width)
+
+    pdf.add_page()
 
     if "political_explanation" in eval_info:
         pdf.add_section("Political Explanation", eval_info["political_explanation"])
@@ -89,10 +103,14 @@ def generate_pdf_report(eval_info, github_reviews, resume_info):
     if "summary" in eval_info:
         pdf.add_section("Summary", eval_info["summary"])
 
+
+
+    pdf.add_page()
     # ============================
     # Section: GitHub Reviews
     # ============================
     if github_reviews and isinstance(github_reviews, dict):
+        github_reviews = github_reviews["GitHub"]
         for language, review in github_reviews.items():
             title = f"GitHub Review - {language}"
             # Check if review is a dict. If so, convert it to a string.
@@ -103,75 +121,6 @@ def generate_pdf_report(eval_info, github_reviews, resume_info):
 
             pdf.add_section(title, review_str)
 
-    # ============================
-    # Section: Resume / Personal Info
-    # ============================
-    # Header with name
-    if "name" in resume_info:
-        pdf.chapter_title(f"Resume: {resume_info['name']}")
-
-    # Contact Info
-    if "contact" in resume_info:
-        contact = resume_info["contact"]
-        contact_details = []
-        for k, v in contact.items():
-            contact_details.append(f"{k.title()}: {v}")
-        pdf.add_section("Contact Information", "\n".join(contact_details))
-
-    # Technical Skills
-    if "tech_skills" in resume_info and resume_info["tech_skills"]:
-        tech_skills = ", ".join(resume_info["tech_skills"])
-        pdf.add_section("Technical Skills", tech_skills)
-
-    # Soft Skills
-    if "soft_skills" in resume_info and resume_info["soft_skills"]:
-        soft_skills = ", ".join(resume_info["soft_skills"])
-        pdf.add_section("Soft Skills", soft_skills)
-
-    # Experience (if any)
-    if "experience" in resume_info and resume_info["experience"]:
-        experience = "\n".join(resume_info["experience"])
-        pdf.add_section("Experience", experience)
-
-    # Projects
-    if "projects" in resume_info and resume_info["projects"]:
-        project_texts = []
-        for proj in resume_info["projects"]:
-            proj_lines = []
-            for field in ["title", "description", "technologies", "role", "results"]:
-                if field in proj:
-                    value = proj[field]
-                    if isinstance(value, list):
-                        value = ", ".join(value)
-                    proj_lines.append(f"{field.title()}: {value}")
-            project_texts.append("\n".join(proj_lines))
-            project_texts.append("-" * 40)
-        pdf.add_section("Projects", "\n".join(project_texts))
-
-    # Education
-    if "education" in resume_info and resume_info["education"]:
-        education_texts = []
-        for edu in resume_info["education"]:
-            edu_lines = []
-            for field in ["university", "degree", "period"]:
-                if field in edu:
-                    edu_lines.append(f"{field.title()}: {edu[field]}")
-            education_texts.append("\n".join(edu_lines))
-            education_texts.append("-" * 40)
-        pdf.add_section("Education", "\n".join(education_texts))
-
-    # Certifications
-    if "certifications" in resume_info and resume_info["certifications"]:
-        certifications = "\n".join(resume_info["certifications"])
-        pdf.add_section("Certifications", ", ".join(certifications))
-
-    # Languages
-    if "languages" in resume_info and resume_info["languages"]:
-        language_texts = []
-        for lang in resume_info["languages"]:
-            # e.g., "English (B2)"
-            language_texts.append(f"{lang.get('language', '')} ({lang.get('level', '')})")
-        pdf.add_section("Languages", ", ".join(language_texts))
 
     # Save the PDF to a file
     pdf_output = "aesthetic_person_report.pdf"
