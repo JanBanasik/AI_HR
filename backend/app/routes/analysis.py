@@ -1,6 +1,7 @@
 import asyncio
 
 from fastapi import APIRouter, UploadFile, File, Form
+
 from app.services.analysis import analyze_github, analyze_x_profile, analyze_pdf_file
 
 router = APIRouter(prefix="/analysis", tags=["Candidate Analysis"])

@@ -3,17 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes import candidate
 from app.routes import analysis
-app = FastAPI(title="HR Summarizer App")
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
+app = FastAPI(title="HR Summarizer App")
 
 # noinspection PyTypeChecker
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

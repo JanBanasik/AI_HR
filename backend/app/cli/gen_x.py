@@ -1,15 +1,16 @@
 import os
-import pandas as pd
-import google.generativeai as genai
-from dotenv import load_dotenv
 import random
+import click
+import pandas as pd
+from dotenv import load_dotenv
+import google.generativeai as genai
+
 
 class PersonProfileGenerator:
-    def __init__(self, base_folder="generated_profiles"):
+    def __init__(self, base_folder="app/mock/x"):
         self.base_folder = base_folder
         os.makedirs(self.base_folder, exist_ok=True)
 
-        # 🔐 API setup
         load_dotenv()
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
@@ -51,12 +52,20 @@ class PersonProfileGenerator:
         csv_path = os.path.join(folder_path, "posts.csv")
         df.to_csv(csv_path, index=False)
 
-        print(f"✅ Utworzono folder: {folder_path}")
-        print(f"✅ Wygenerowano profil typu: {profile_type}")
-        print(f"✅ Zapisano {num_posts} postów do: {csv_path}")
+        click.echo(f"✅ Created folder: {folder_path}")
+        click.echo(f"✅ Generated profile type: {profile_type}")
+        click.echo(f"✅ Saved {num_posts} posts to: {csv_path}")
         return csv_path
 
-# Przykład użycia:
-if __name__ == "__main__":
+
+@click.command()
+@click.option('--person-id', default='person001', help='Identifier for the person profile folder')
+@click.option('--num-posts', default=10, help='Number of posts to generate')
+def generate(person_id, num_posts):
+    """Generate a social media profile with mock posts using Gemini API."""
     generator = PersonProfileGenerator()
-    generator.create_profile("person001")
+    generator.create_profile(person_id, num_posts)
+
+
+if __name__ == '__main__':
+    generate()
