@@ -1,0 +1,106 @@
+{
+    "user_info": {
+        "login": "Kubapatimat",
+        "bio": "Brak bio",
+        "location": "Brak lokalizacji",
+        "avatar_url": "https://avatars.githubusercontent.com/u/15860753?v=4",
+        "public_repos": 10,
+        "followers": 4,
+        "following": 2,
+        "created_at": "2015-11-15T19:43:56+00:00"
+    },
+    "commits_by_language": {
+        "Python": [
+            {
+                "sha": "298541b87e0e970d1c77b36eb1c02eb87090505b",
+                "message": "reformat code, add test cases, parentheses check, exponentiation",
+                "repo": "tkik",
+                "date": "2025-03-17T17:52:15+00:00",
+                "filename": "math_lexer/test.py",
+                "code_diff": "\ndef test_lexer_valid_expression():\n\ndef test_lexer_invalid_character():\n    lexer = Lexer(\"1+2+3 / (4 + 5) + 2^3 - 5! / 2\")\n\n\ndef test_lexer_invalid_identifier():\n    test_data = \"12 + abc * 3 + 4a - 5\"\n    assert \"Identifier cannot start with a digit\" in error_message\n\n\ndef test_lexer_unmatched_opening_parenthesis():\n    lexer = Lexer(\"1 + 2 + (3 + 4\")\n    tokens = []\n    with pytest.raises(InvalidCharacterException) as error_info:\n        while True:\n            token = lexer.token()\n            tokens.append(token)\n            if token.token_type == TokenType.EOF:\n                break\n    error_message = str(error_info.value)\n    assert \"Unmatched opening parenthesis\" in error_message\n\n\ndef test_lexer_unmatched_closing_parenthesis():\n    lexer = Lexer(\"(1 + 2) + 3) + 4\")\n    tokens = []\n    with pytest.raises(InvalidCharacterException) as error_info:\n        while True:\n            token = lexer.token()\n            tokens.append(token)\n            if token.token_type == TokenType.EOF:\n                break\n    error_message = str(error_info.value)\n    assert \"Unmatched closing parenthesis\" in error_message\n\n\ndef test_lexer_multiline_valid():\n    lexer = Lexer(\"1 + 2\\n+ 3\")\n    tokens = []\n    while True:\n        token = lexer.token()\n        tokens.append(token)\n        if token.token_type == TokenType.EOF:\n            break\n    assert tokens == [\n        Token(TokenType.NUMBER, '1'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '2'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.EOF, '')\n    ]\n\n\ndef test_lexer_error_position():\n    lexer = Lexer(\"1 + 2\\n+ 3a + 4\\n+ 5\")\n    tokens = []\n    with pytest.raises(InvalidCharacterException) as error_info:\n        while True:\n            token = lexer.token()\n            tokens.append(token)\n            if token.token_type == TokenType.EOF:\n                break\n    error_message = str(error_info.value)\n    assert \"line 2, column 4\" in error_message\n    assert \"Invalid character 'a'\" in error_message",
+                "line_count": 68
+            },
+            {
+                "sha": "7d1bcfdb170d2ddcfd9819a6382ee87ece00ffa0",
+                "message": "init commit",
+                "repo": "turk",
+                "date": "2025-03-09T17:37:50+00:00",
+                "filename": "test/mock_device.py",
+                "code_diff": "import serial\nimport time\nimport logging\nfrom sys import platform\n\n\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\nDEVICE_COMMANDS = {\n    \"help\": \"available commands: help, version, show ip interface brief\",\n    \"version\": \"1.2.3\",\n    \"show ip interface brief\": \"\"\"\nInterface              IP-Address      OK? Method Status                Protocol\nFastEthernet0/0        unassigned      YES NVRAM  up                    up \n\"\"\"\n}\n\n\ndef simulate_device(port='COM3', baudrate=9600, timeout=0.5, write_timeout=0.5, **kwargs):\n    try:\n        ser = serial.Serial(\n            port=port, baudrate=baudrate, timeout=timeout, write_timeout=write_timeout,\n            xonxoff=False, rtscts=False, dsrdtr=False, **kwargs\n        )\n    except serial.SerialException as e:\n        logger.error(f\"Error opening serial port: {e}\")\n        return\n\n    logger.info(f\"Mock device listening on {port} at {baudrate} baud...\\n\")\n\n    while True:\n        command_buffer = \"\"\n        while True:\n            byte = ser.read(1)\n            if byte:\n                char = byte.decode('utf-8', errors='ignore')\n\n                try:\n                    ser.write(byte)\n                except serial.SerialException as e:\n                    logger.error(f\"Write error: {e}\")\n                    ser.close()\n                    time.sleep(1)\n                    ser.open()\n                    continue\n\n                if char in ['\\r', '\\n']:\n                    if command_buffer.strip():\n                        logger.info(f\"Received command: {command_buffer.strip()}\")\n                        response = DEVICE_COMMANDS.get(command_buffer.strip(), \"Invalid command. Type 'help' for available options.\")\n                        try:\n                            ser.write(b'\\r\\n' + response.encode() + b'\\r\\n')\n                        except serial.SerialException as e:\n                            logger.error(f\"Write error while sending response: {e}\")\n                    command_buffer = \"\"\n                else:\n                    command_buffer += char\n\n\nif __name__ == \"__main__\":\n    serial_port = None\n    if platform == \"linux\" or platform == \"linux2\":\n        serial_port = \"/dev/socatpty1\"\n    elif platform == \"win32\":\n        serial_port = \"COM3\"\n    simulate_device(port=serial_port)",
+                "line_count": 67
+            },
+            {
+                "sha": "7d1bcfdb170d2ddcfd9819a6382ee87ece00ffa0",
+                "message": "init commit",
+                "repo": "turk",
+                "date": "2025-03-09T17:37:50+00:00",
+                "filename": "turk.py",
+                "code_diff": "from sys import platform\n\nimport serial\n\n\nclass Turk:\n    def __init__(self, port=None, baudrate=9600, timeout=0.5, write_timeout=0.5, **kwargs):\n        if port is None:\n            if platform == \"linux\" or platform == \"linux2\":\n                port = \"/dev/socatpty3\"\n            elif platform == \"win32\":\n                port = \"COM20\"\n        self._serial = serial.Serial(port=port, baudrate=baudrate, timeout=timeout, write_timeout=write_timeout,\n                                     parity=serial.PARITY_NONE,\n                                     stopbits=serial.STOPBITS_ONE,\n                                     bytesize=serial.EIGHTBITS,\n                                     xonxoff=False,\n                                     rtscts=False,\n                                     dsrdtr=False, **kwargs)\n        # Enter write mode in Cisco IOS (press enter a couple of times)\n        self._serial.write(b'\\r\\n'*5)\n        self._serial.flush()\n\n    def _send_command(self, command):\n        try:\n            message = f\"{command}\\r\\n\"\n            self._serial.write(message.encode())\n            self._serial.flush()\n            # Skip the first line (echo) and messages other sockets\n            while True:\n                data = self._serial.readline()\n                if command.encode() in data:\n                    break\n\n            while True:\n                data = self._serial.readline().decode()\n                print(data, end='')\n                # Handle incomplete output\n                if \"--More--\" in data:\n                    self._serial.write(b' ')\n                    self._serial.flush()\n                    continue\n                # Check if no more data is available within the timeout\n                if not data:\n                    break\n            # If a command with \"?\" is used, clear the prompt with backspaces\n            if \"?\" in message:\n                self._serial.write(('\\010' * (len(message) - 1)).encode())\n                self._serial.flush()\n        except serial.SerialException:\n            print(\"Error writing to serial port\")\n\n    def __call__(self, *args):\n        if len(args) == 1:\n            self._send_command(args[0])\n        else:\n            for i, arg in enumerate(args):\n                self._send_command(arg)\n                if i != len(args) - 1:\n                    print(\"\\n\")",
+                "line_count": 60
+            },
+            {
+                "sha": "77bb9ddac2f24a184d0daf817f4b0dd3665cb8b1",
+                "message": "add basic lexer for math expressions",
+                "repo": "tkik",
+                "date": "2025-03-16T19:24:11+00:00",
+                "filename": "math_lexer/test.py",
+                "code_diff": "import pytest\n\nfrom .lexer import Lexer, InvalidCharacterException\nfrom .tokens import TokenType, Token\n\ndef test_lexer_valid():\n    lexer = Lexer('2+3*(76+8/3)+ 3*(9-3)+10*abc01 -(a + b)')\n\n    tokens = []\n    while True:\n        token = lexer.token()\n        tokens.append(token)\n        if token.token_type == TokenType.EOF:\n            break\n\n    assert tokens == [\n        Token(TokenType.NUMBER, '2'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.MULTIPLY, '*'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '76'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '8'),\n        Token(TokenType.DIVIDE, '/'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.MULTIPLY, '*'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '9'),\n        Token(TokenType.MINUS, '-'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '10'),\n        Token(TokenType.MULTIPLY, '*'),\n        Token(TokenType.IDENTIFIER, 'abc01'),\n        Token(TokenType.MINUS, '-'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.IDENTIFIER, 'a'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.IDENTIFIER, 'b'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.EOF, '')\n    ]\n\ndef test_lexer_invalid():\n    lexer = Lexer(\"1+2+3 / (4 + 5) + 0ab\")\n\n    tokens = []\n    with pytest.raises(InvalidCharacterException):\n        while True:\n            token = lexer.token()\n            tokens.append(token)\n            if token.token_type == TokenType.EOF:\n                break",
+                "line_count": 58
+            },
+            {
+                "sha": "298541b87e0e970d1c77b36eb1c02eb87090505b",
+                "message": "reformat code, add test cases, parentheses check, exponentiation",
+                "repo": "tkik",
+                "date": "2025-03-17T17:52:15+00:00",
+                "filename": "math_lexer/lexer.py",
+                "code_diff": "from .tokens import TokenType, Token, token_mapping\n\n\n        self._pos = 0\n        self._data = data\n        self._line = 1\n        self._column = 1\n        self._parentheses = 0\n\n    def _is_within_bounds(self):\n        return self._pos < len(self._data)\n\n    def _advance(self):\n        if self._pos < len(self._data):\n            if self._data[self._pos] == '\\n':\n                self._line += 1\n                self._column = 1\n                self._column += 1\n        self._pos += 1\n        if not self._is_within_bounds():\n            if self._parentheses:\n                raise InvalidCharacterException(\n                    f\"Invalid character at line {self._line}, column {self._column}. \"\n                    f\"Unmatched opening parenthesis.\"\n                )\n            return Token(TokenType.EOF, '', self._pos, self._pos)\n        char = self._data[self._pos]\n            self._advance()\n            while self._is_within_bounds() and is_whitespace(self._data[self._pos]):\n                self._advance()\n        if char in token_mapping:\n            token = Token(token_mapping[char], char, self._pos, self._pos)\n            self._advance()\n            if char == '(':\n                self._parentheses += 1\n            elif char == ')':\n                if self._parentheses == 0:\n                    raise InvalidCharacterException(\n                        f\"Invalid character '{char}' at line {self._line}, column {self._column}. \"\n                        f\"Unmatched closing parenthesis.\"\n                    )\n                self._parentheses -= 1\n            start = self._pos\n            self._advance()\n            while self._is_within_bounds() and is_digit(self._data[self._pos]):\n                self._advance()\n            if self._is_within_bounds() and is_alpha(self._data[self._pos]):\n                    f\"Invalid character '{self._data[self._pos]}' at line {self._line}, column {self._column}. \"\n                    f\"Identifier cannot start with a digit.\"\n            return Token(TokenType.NUMBER, self._data[start:self._pos], start, self._pos - 1)\n            start = self._pos\n            self._advance()\n            while self._is_within_bounds() and (is_alpha(self._data[self._pos]) or is_digit(self._data[self._pos])):\n                self._advance()\n            return Token(TokenType.IDENTIFIER, self._data[start:self._pos], start, self._pos - 1)\n            raise InvalidCharacterException(\n                f\"Invalid character '{char}' at line {self._line}, column {self._column}.\")",
+                "line_count": 57
+            },
+            {
+                "sha": "77bb9ddac2f24a184d0daf817f4b0dd3665cb8b1",
+                "message": "add basic lexer for math expressions",
+                "repo": "tkik",
+                "date": "2025-03-16T19:24:11+00:00",
+                "filename": "math_lexer/lexer.py",
+                "code_diff": "from .tokens import TokenType, Token\nfrom .utils import is_whitespace, is_digit, is_alpha\n\nclass InvalidCharacterException(Exception):\n    pass\n\nclass Lexer:\n    def __init__(self, data: str):\n        self.pos = 0\n        self.data = data\n\n    def token(self) -> Token:\n        if self.pos >= len(self.data):\n            return Token(TokenType.EOF, '', self.pos, self.pos)\n\n        char = self.data[self.pos]\n        if is_whitespace(char):\n            self.pos += 1\n            return self.token()\n        if char == '+':\n            token = Token(TokenType.PLUS, '+', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if char == '-':\n            token = Token(TokenType.MINUS, '-', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if char == '*':\n            token = Token(TokenType.MULTIPLY, '*', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if char == '/':\n            token = Token(TokenType.DIVIDE, '/', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if char == '(':\n            token = Token(TokenType.LPAREN, '(', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if char == ')':\n            token = Token(TokenType.RPAREN, ')', self.pos, self.pos)\n            self.pos += 1\n            return token\n        if is_digit(char):\n            start = self.pos\n            self.pos += 1\n            while self.pos < len(self.data) and is_digit(self.data[self.pos]):\n                self.pos += 1\n            return Token(TokenType.NUMBER, self.data[start:self.pos])\n        if is_alpha(char):\n            start = self.pos\n            self.pos += 1\n            while self.pos < len(self.data) and (is_alpha(self.data[self.pos]) or is_digit(self.data[self.pos])):\n                self.pos += 1\n            return Token(TokenType.IDENTIFIER, self.data[start:self.pos])\n        else:\n            raise InvalidCharacterException(f'Invalid character at position {self.pos}: {char}')",
+                "line_count": 57
+            },
+            {
+                "sha": "148ac559a374e6b541abc1705acdec473bd995c9",
+                "message": "add test case",
+                "repo": "tkik",
+                "date": "2025-03-17T18:05:23+00:00",
+                "filename": "math_lexer/test.py",
+                "code_diff": "\n\ndef test_lexer_valid_multiline_expression():\n    lexer = Lexer(\"(1+2)\\n*(3+4)\\n /   (5 + 6) + abcd01\\n\\n\\n - (2^3)^(-1)\")\n    tokens = []\n    while True:\n        token = lexer.token()\n        tokens.append(token)\n        if token.token_type == TokenType.EOF:\n            break\n    assert tokens == [\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '1'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '2'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.MULTIPLY, '*'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '4'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.DIVIDE, '/'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '5'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.NUMBER, '6'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.PLUS, '+'),\n        Token(TokenType.IDENTIFIER, 'abcd01'),\n        Token(TokenType.MINUS, '-'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.NUMBER, '2'),\n        Token(TokenType.EXPONENT, '^'),\n        Token(TokenType.NUMBER, '3'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.EXPONENT, '^'),\n        Token(TokenType.LPAREN, '('),\n        Token(TokenType.MINUS, '-'),\n        Token(TokenType.NUMBER, '1'),\n        Token(TokenType.RPAREN, ')'),\n        Token(TokenType.EOF, '')\n    ]",
+                "line_count": 43
+            },
+            {
+                "sha": "77bb9ddac2f24a184d0daf817f4b0dd3665cb8b1",
+                "message": "add basic lexer for math expressions",
+                "repo": "tkik",
+                "date": "2025-03-16T19:24:11+00:00",
+                "filename": "math_lexer/tokens.py",
+                "code_diff": "from enum import Enum, auto\n\nclass TokenType(Enum):\n    NUMBER = auto()\n    IDENTIFIER = auto()\n    PLUS = auto()\n    MINUS = auto()\n    MULTIPLY = auto()\n    DIVIDE = auto()\n    LPAREN = auto()\n    RPAREN = auto()\n    EOF = auto()\n\nclass Token:\n    def __init__(self, token_type: TokenType, value: str, start_pos: int = None, end_pos: int = None):\n        self.token_type = token_type\n        self.value = value\n        self.start_pos = start_pos\n        self.end_pos = end_pos\n\n    def __repr__(self):\n        return f'{self.token_type.name}, {self.value}'\n\n    def __eq__(self, other):\n        return self.token_type == other.token_type and self.value == other.value",
+                "line_count": 25
+            },
+            {
+                "sha": "298541b87e0e970d1c77b36eb1c02eb87090505b",
+                "message": "reformat code, add test cases, parentheses check, exponentiation",
+                "repo": "tkik",
+                "date": "2025-03-17T17:52:15+00:00",
+                "filename": "math_lexer/tokens.py",
+                "code_diff": "\n    EOF = auto()\n    EXPONENT = auto()\n\n\ntoken_mapping = {\n    \"+\": TokenType.PLUS,\n    \"-\": TokenType.MINUS,\n    \"*\": TokenType.MULTIPLY,\n    \"/\": TokenType.DIVIDE,\n    \"^\": TokenType.EXPONENT,\n    \"(\": TokenType.LPAREN,\n    \")\": TokenType.RPAREN\n}\n\n        return self.token_type == other.token_type and self.value == other.value",
+                "line_count": 16
+            },
+            {
+                "sha": "77bb9ddac2f24a184d0daf817f4b0dd3665cb8b1",
+                "message": "add basic lexer for math expressions",
+                "repo": "tkik",
+                "date": "2025-03-16T19:24:11+00:00",
+                "filename": "math_lexer/utils.py",
+                "code_diff": "DIGITS = '0123456789'\nWHITESPACE = ' \\t\\n\\r\\f\\v'\n\ndef is_digit(char: str) -> bool:\n    return char in DIGITS\n\ndef is_whitespace(char: str) -> bool:\n    return char in WHITESPACE\n\ndef is_alpha(char: str) -> bool:\n    return 'a' <= char <= 'z' or 'A' <= char <= 'Z' or char == '_'\n\n__all__ = ['is_digit', 'is_whitespace', 'is_alpha']",
+                "line_count": 13
+            }
+        ]
+    }
+}
