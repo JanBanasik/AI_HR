@@ -16,7 +16,7 @@ CVision is an AI-powered web application designed to streamline the recruitment 
 ## Project Overview
 
 Recruiting in today’s competitive market requires sifting through massive amounts of candidate information across multiple platforms. CVision addresses this challenge by:
-- Automatically gathering data from various sources (e.g., GitHub, LinkedIn, social media).
+- Automatically gathering data from various sources (e.g., GitHub, LeetCode, social media, attached resume).
 - Analyzing the data using AI and machine learning algorithms.
 - Creating detailed, easy-to-read candidate profiles that help recruiters quickly gauge the strengths and potential fit of candidates.
 
@@ -27,16 +27,16 @@ This project was developed during a hackathon, and the modern UI (see branch **0
 - **Automatic Candidate Profile Generation:** Seamlessly aggregates data from multiple online sources to build a comprehensive candidate profile.
 - **AI-Driven Analysis:** Utilizes machine learning techniques to evaluate candidate skills and potential.
 - **Modern and Responsive User Interface:** Developed using the latest UI principles to ensure a smooth user experience.
-- **Real-Time Data Integration:** Leverages APIs from platforms like GitHub and LinkedIn to fetch up-to-date information.
+- **Real-Time Data Integration:** Leverages APIs from platforms like GitHub and LeetCode to fetch up-to-date information.
 - **Customizable Reporting:** Offers recruiters the flexibility to tailor candidate insights based on specific parameters.
 
 ## Technologies
 
-- **Frontend:** Developed using modern JavaScript frameworks (e.g., React, Vue) – choose the one most suited to your implementation.
-- **Backend:** Built on either Node.js or Python based services.
-- **Machine Learning:** Integrates AI/ML libraries (e.g., TensorFlow, scikit-learn) for data analysis.
-- **API Integrations:** Connects with GitHub, LinkedIn, and other social media APIs to gather candidate data.
-- **UI/UX:** Enhanced by the new UI design implemented on the **03-new-ui** branch.
+- **Frontend:** Developed using modern JavaScript frameworks (e.g., React).
+- **Backend:** Built on Python based services.
+- **Machine Learning:** Integrates AI/ML APIs (specifically Gemini 1.5 flash) for review generation.
+- **API Integrations:** Connects with APIs of GitHub, LeetCode (and more in the future) to gather candidate data.
+- **UI/UX:** Intuitive UI on the highest level.
 
 ## Installation
 
