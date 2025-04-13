@@ -1,0 +1,17 @@
+click==8.1.8
+fastapi==0.115.12
+fitz==0.0.1.dev2
+fpdf==1.7.2
+matplotlib==3.10.1
+motor==3.7.0
+pandas==2.2.3
+pydantic==2.11.3
+pydantic_settings==2.8.1
+pymongo==4.12.0
+python-dotenv==1.1.0
+rich==14.0.0
+snscrape==0.7.0.20230622
+google~=3.0.0
+protobuf~=5.29.4
+pydantic-settings~=2.8.1
+PyGithub~=2.6.1
