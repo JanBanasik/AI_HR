@@ -4,14 +4,12 @@ CVision is an AI-powered web application designed to streamline the recruitment 
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [Project Overview](#Project-overview)
+- [Features](#Features)
+- [Technologies](#Technologies)
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [License](#License)
 
 ## Project Overview
 
