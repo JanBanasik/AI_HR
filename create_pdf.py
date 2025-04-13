@@ -109,7 +109,7 @@ def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info
 
     pdf.add_page()
 
-        pdf.add_section("LeetCode activity evaluation", leet_code_features["evaluation"])
+    pdf.add_section("LeetCode activity evaluation", leet_code_features["evaluation"])
 
     pdf.add_page()
     # ============================
