@@ -105,8 +105,8 @@ const Navbar = () => {
     <header className="w-full bg-white border-b border-gray-200 shadow-sm dark:bg-gray-900 dark:border-gray-800">
       <div className="flex h-16 items-center px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2 font-semibold text-xl">
-          <div className="w-8 h-8 bg-cvision-purple rounded-md flex items-center justify-center">
-            <span className="text-white font-bold">CV</span>
+          <div className="w-8 h-8 bg-cvision-purple-light rounded-md flex items-center justify-center">
+            <img src={"/logo.png"} alt="Logo" className="h-6 w-6" />
           </div>
           <span className="hidden md:inline-block">CVision</span>
         </Link>
