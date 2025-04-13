@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 
 
 class CVJobComparator:
-    def __init__(self, cv_json_path: str, job_json_path: str):
+    def __init__(self, cv_json_path: str, job_json_path: str, name: str):
         load_dotenv()
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("Missing GEMINI_API_KEY in .env")
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel("gemini-1.5-flash")
-
+        self.name = name
         self.cv_json = self._load_json(cv_json_path)
         self.job_json = self._load_json(job_json_path)
 
@@ -23,13 +23,13 @@ class CVJobComparator:
 
     def compare(self):
         prompt = (
-            "Porównaj dane kandydata (CV) z wymaganiami oferty pracy i oszacuj dopasowanie procentowe.\n"
-            "Weź pod uwagę: umiejętności techniczne, doświadczenie projektowe, znajomość języka angielskiego, dostępność oraz poziom motywacji (jeśli wynika z CV).\n"
-            "Zwróć:\n"
-            "- score: liczba całkowita (0–100) opisująca dopasowanie\n"
-            "- justification: 2–4 zdania uzasadnienia (co pasuje, czego brakuje)\n\n"
+            "Compare the candidate's data (CV) with the job offer requirements and estimate the percentage match.\n"
+            "Take into account: technical skills, project experience, English proficiency, availability, and level of motivation (if evident from the CV).\n"
+            "Return -- a json object:\n"
+            "- score: an integer (0–100) indicating the match percentage\n"
+            "- justification: 2–4 sentences of justification (what matches, what's missing)\n\n"
             f"CV:\n{json.dumps(self.cv_json, ensure_ascii=False)}\n\n"
-            f"Oferta pracy:\n{json.dumps(self.job_json, ensure_ascii=False)}"
+            f"Job offer:\n{json.dumps(self.job_json, ensure_ascii=False)}"
         )
 
         response = self.model.generate_content(prompt)
@@ -77,8 +77,8 @@ class CVJobComparator:
                 fontsize=28, fontweight='bold', color='green')
 
         ax.set(aspect="equal")
-        ax.set_title("Dopasowanie kandydata", fontsize=12)
-        plt.savefig(output_file, bbox_inches='tight', dpi=100)
+        ax.set_title("Candidate's match score", fontsize=12)
+        plt.savefig(f"data/{self.name}/{output_file}", bbox_inches='tight', dpi=100)
         plt.close()
         print(f"✅ Wykres zapisany jako {output_file}")
 

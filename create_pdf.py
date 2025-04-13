@@ -85,12 +85,12 @@ def generate_pdf_report(eval_info, github_reviews, resume_info, justification, m
     if details:
         pdf.add_section("Evaluation Details", "\n".join(details))
 
-    pdf.add_section("Resume fitting justification", justification["justification"])
+    pdf.add_section("Resume fitting results description", justification["justification"])
 
     x = 10  # x position
     w = 100  # width
     h = 0  # height (0 means auto-calculate to maintain aspect ratio)
-    image_width = 60
+    image_width = 90
     page_width = pdf.w - 2 * pdf.l_margin  # Effective page width
     x_position = (page_width - image_width) / 2 + pdf.l_margin
     pdf.image(match_score_path, x=x_position, y=pdf.get_y() + 5, w = image_width)
