@@ -1,0 +1,79 @@
+{
+  "name": "Antoni Pater",
+  "contact": {
+    "email": "antonipaterbusiness@gmail.com",
+    "phone": "+48 510 637 158"
+  },
+  "tech_skills": [
+    "Python",
+    "C++",
+    "XGBoost",
+    "Scikit-learn",
+    "PyTorch",
+    "Pandas",
+    "Matplotlib",
+    "NumPy",
+    "PostgreSQL",
+    "Git",
+    "GitHub",
+    "Colab",
+    "Linux",
+    "Torchvision"
+  ],
+  "soft_skills": [
+    "Highly motivated",
+    "Ambitious",
+    "Passionate about applying AI to solve real-world problems"
+  ],
+  "experience": [],
+  "projects": [
+    {
+      "title": "BloodGuard: AI Health Diagnosis via Blood Test Analysis",
+      "description": "Built an XGBoost model to classify blood test results, enabling predictions and accuracy evaluation with preprocessing.",
+      "technologies": [
+        "Python",
+        "XGBoost",
+        "Pandas",
+        "Scikit-learn"
+      ],
+      "role": "Developer"
+    },
+    {
+      "title": "ChestXrayClassifier: AI-Powered Pneumonia Detection from Chest X-Ray Images",
+      "description": "Developed an AI diagnostic tool in PyTorch using DenseNet121 to classify chest X-rays as NORMAL or PNEUMONIA.",
+      "technologies": [
+        "PyTorch",
+        "Torchvision",
+        "Scikit-learn"
+      ],
+      "role": "Developer"
+    },
+    {
+      "title": "Desktop learning application",
+      "description": "Developed a desktop learning application using Python to enhance educational experiences through interactive features.",
+      "technologies": [
+        "Python"
+      ],
+      "role": "Developer",
+      "results": "3rd place in the Motorola Science Cup 2022"
+    }
+  ],
+  "education": [
+    {
+      "university": "AGH University of Science and Technology",
+      "degree": "Bachelor of Computer Science and Intelligent Systems",
+      "period": "2023 - 2027"
+    }
+  ],
+  "certifications": [],
+  "languages": [
+    {
+      "language": "English",
+      "level": "B2"
+    },
+    {
+      "language": "Polish",
+      "level": "Native"
+    }
+  ]
+}
