@@ -11,8 +11,9 @@ def write_markup(pdf, text, line_height=8):
     """
     lines = text.split('\n')
     for line in lines:
+        line_ = line.replace('’', '')
         # Split line by "*" to toggle bold formatting for odd parts
-        segments = line.split('*')
+        segments = line_.split('*')
         for index, segment in enumerate(segments):
             # Odd index segments are within asterisks -> bold.
             if index % 2 == 1:

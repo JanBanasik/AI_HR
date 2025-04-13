@@ -12,7 +12,7 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed", leetcodeUserNa
         os.makedirs(f"data/{personName}/")
 
     outputJson = f"data/{personName}/"
-    score, justification = getResultsForPDFFile("CV/hacknarokCV.pdf", outputJson, personName)
+    score, justification = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson, personName)
     # TODO:
     missingFeatures = get_missing_features(justification, "CV/example.json")
     leetcodeFeatures = get_user_features(leetcodeUserName, outputJson)
@@ -30,7 +30,7 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed", leetcodeUserNa
 
 if __name__ == "__main__":
     personName = "Jan Banasik"
-    mergeResults(githubUsername="antoniopater", twitterId="person001", personName=personName, leetcodeUserName="JanBanasik")
+    mergeResults(githubUsername="Kubapatimat", twitterId="person001", personName=personName, leetcodeUserName="JanBanasik")
 
     with open(f"data/{personName}/GitHub.json") as f1:
         github_info = json.load(f1)
@@ -47,8 +47,7 @@ if __name__ == "__main__":
         missing_features = json.load(f4)
 
 
-
-    with open(f"data/{personName}/leet_code_features.json", "w") as f5:
+    with open(f"data/{personName}/leetcode_profile.json") as f5:
         leet_code_features = json.load(f5)
 
     generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification, leet_code_features,

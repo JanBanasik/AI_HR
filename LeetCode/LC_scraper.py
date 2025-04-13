@@ -18,24 +18,20 @@ def getResultsForGivenPrompt(prompt) -> str:
 
 
 def generate_profile_review(profile):
-    prompt = f"""
-    Ocena profilu użytkownika na podstawie danych z LeetCode.
 
-    Użytkownik:
-    - Nazwa użytkownika: {profile["username"]}
-    - Ranking: {profile["ranking"]}
-    - Ocena: {profile["star_rating"]}
-    - Rozwiązane zadania:
-      - Łatwe: {profile["solved"]["Easy"]}
-      - Średnie: {profile["solved"]["Medium"]}
-      - Trudne: {profile["solved"]["Hard"]}
-      - Łącznie: {profile["solved"]["All"]}
-    - Odznaki: {", ".join(profile["badges"])}
-
-    Proszę ocenić profil użytkownika na podstawie powyższych informacji, uwzględniając jego postępy w rozwiązywaniu zadań, ranking oraz odznaki.
-    """
-
-    return getResultsForGivenPrompt(prompt)
+    return getResultsForGivenPrompt(f"User profile assessment based on LeetCode data.\n\n"
+f"User:\n"
+f"- Username: {profile['username']}\n"
+f"- Ranking: {profile['ranking']}\n"
+f"- Rating: {profile['star_rating']}\n"
+f"- Solved problems:\n"
+f"  - Easy: {profile['solved']['Easy']}\n"
+f"  - Medium: {profile['solved']['Medium']}\n"
+f"  - Hard: {profile['solved']['Hard']}\n"
+f"  - Total: {profile['solved']['All']}\n"
+f"- Badges: {', '.join(profile['badges'])}\n\n"
+f"Please evaluate the user's profile based on the above information, considering their progress in problem-solving, ranking, and badges."
+)
 
 
 def clean_html_to_text(html_content):
@@ -113,7 +109,7 @@ class LeetcodeFetcher:
         }
 
 
-def save_profile_to_json(profile_data, outputPath="leetcode_profile.json"):
+def save_profile_to_json(profile_data, outputPath):
     outputPath = os.path.join(outputPath, "leetcode_profile.json")
     with open(outputPath, "w", encoding="utf-8") as f:
         json.dump(profile_data, f, indent=4, ensure_ascii=False)
@@ -130,5 +126,3 @@ def get_user_features(username, outputPath):
     profile = fetcher.get_user_profile(f"{username}")
     save_profile_to_json({"review": generate_profile_review(profile)}, outputPath)
 
-
-get_user_features("JanBanasik", "./")
