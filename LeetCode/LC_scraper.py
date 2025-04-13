@@ -114,22 +114,9 @@ class LeetcodeFetcher:
 
 
 def save_profile_to_json(profile_data, outputPath="leetcode_profile.json"):
-    formatted_data = {
-        "username": profile_data["username"],
-        "ranking": profile_data["ranking"],
-        "star_rating": profile_data["star_rating"],
-        "solved_problems": {
-            "Easy": profile_data["solved"].get("Easy", 0),
-            "Medium": profile_data["solved"].get("Medium", 0),
-            "Hard": profile_data["solved"].get("Hard", 0),
-            "Total": profile_data["solved"].get("All", 0),
-        },
-        "badges": profile_data["badges"],
-        "avatar_url": profile_data["avatar"]
-    }
     outputPath = os.path.join(outputPath, "leetcode_profile.json")
     with open(outputPath, "w", encoding="utf-8") as f:
-        json.dump(formatted_data, f, indent=4, ensure_ascii=False)
+        json.dump(profile_data, f, indent=4, ensure_ascii=False)
 
     print(f"✔️ Dane zapisane do {outputPath}")
 
@@ -141,4 +128,7 @@ def get_user_features(username, outputPath):
         "SfKWxwLiZB6yQt6AlxNXAzMRH1KhXFoOP8KPwom6R0XU5L765D7zCjTYf3rZDfN9")
 
     profile = fetcher.get_user_profile(f"{username}")
-    save_profile_to_json(profile, outputPath)
+    save_profile_to_json({"review": generate_profile_review(profile)}, outputPath)
+
+
+get_user_features("JanBanasik", "./")
