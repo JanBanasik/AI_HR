@@ -1,4 +1,4 @@
-def createPrompt(commit) -> str:
+def create_prompt(commit) -> str:
     return f"""
     **Act as a Senior Software Engineer performing a code review.**  
     Analyze the following code changes from GitHub commit in repository '{commit['repo']}' (Date: {commit['date']}):
@@ -12,8 +12,9 @@ def createPrompt(commit) -> str:
     **Code Changes:**
     {commit['code_diff']}."""
 
-def createOverallPrompt(lang, res):
-    overallPrompt = f"""
+
+def create_overall_prompt(lang, res):
+    overall_prompt = f"""
     Based on those scores, please evaluate the candidate in the realm of \n
 {lang} \n
 programming language. DO NOT SAY, that the provided code is insufficient to make the review or mention it anyhow -- make the opinion anyway.
@@ -21,7 +22,4 @@ Quickly list weak and strong sides and at the end make an overall opinion. Your 
 Here's the code: 
 {res}"""
 
-
-
-    return overallPrompt
-
+    return overall_prompt

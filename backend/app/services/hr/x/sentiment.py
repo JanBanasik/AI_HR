@@ -1,9 +1,10 @@
 import os
 import re
-import pandas as pd
-import matplotlib.pyplot as plt
-from dotenv import load_dotenv
+
 import google.generativeai as genai
+import pandas as pd
+from dotenv import load_dotenv
+
 
 class GeminiAnalyzer:
     def __init__(self, csv_path):

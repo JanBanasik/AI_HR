@@ -4,10 +4,10 @@ import os
 
 def scrape_twitter_posts(username: str, max_results: int = 20, output_folder: str = "generated_profiles") -> str:
     """
-    Scrapes tweets from a given Twitter/X username and saves them to posts.csv
+    Scrapes tweets from a given Twitter/x username and saves them to posts.csv
 
     Args:
-        username (str): Twitter/X username (without @)
+        username (str): Twitter/x username (without @)
         max_results (int): Maximum number of posts to scrape
         output_folder (str): Folder where the user's folder and CSV will be saved
 
@@ -38,5 +38,5 @@ def scrape_twitter_posts(username: str, max_results: int = 20, output_folder: st
 
 # 🔍 Example usage
 if __name__ == "__main__":
-    # Replace 'jack' with any public Twitter/X username
+    # Replace 'jack' with any public Twitter/x username
     scrape_twitter_posts("elonmusk", max_results=10)

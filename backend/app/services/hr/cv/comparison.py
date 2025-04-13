@@ -23,12 +23,12 @@ class CVJobComparator:
 
     def compare(self):
         prompt = (
-            "Porównaj dane kandydata (CV) z wymaganiami oferty pracy i oszacuj dopasowanie procentowe.\n"
-            "Weź pod uwagę: umiejętności techniczne, doświadczenie projektowe, znajomość języka angielskiego, dostępność oraz poziom motywacji (jeśli wynika z CV).\n"
+            "Porównaj dane kandydata (cv) z wymaganiami oferty pracy i oszacuj dopasowanie procentowe.\n"
+            "Weź pod uwagę: umiejętności techniczne, doświadczenie projektowe, znajomość języka angielskiego, dostępność oraz poziom motywacji (jeśli wynika z cv).\n"
             "Zwróć:\n"
             "- score: liczba całkowita (0–100) opisująca dopasowanie\n"
             "- justification: 2–4 zdania uzasadnienia (co pasuje, czego brakuje)\n\n"
-            f"CV:\n{json.dumps(self.cv_json, ensure_ascii=False)}\n\n"
+            f"cv:\n{json.dumps(self.cv_json, ensure_ascii=False)}\n\n"
             f"Oferta pracy:\n{json.dumps(self.job_json, ensure_ascii=False)}"
         )
 

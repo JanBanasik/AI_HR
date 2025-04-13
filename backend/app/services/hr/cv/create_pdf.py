@@ -1,6 +1,4 @@
 from fpdf import FPDF
-import json
-import re
 
 
 # Helper function to write text with inline bold formatting (i.e. *text* becomes bold)
