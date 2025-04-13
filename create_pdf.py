@@ -60,7 +60,7 @@ class PDFReport(FPDF):
             self.chapter_body(content)
 
 
-def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info, justification, name_path):
+def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info, justification, leet_code_features, name_path):
     """
     Generates an aesthetically pleasing PDF report combining:
      - Evaluation info (scores, classification, explanations, summary)
@@ -106,6 +106,10 @@ def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info
         pdf.add_section("Summary", eval_info["summary"])
 
 
+
+    pdf.add_page()
+
+        pdf.add_section("LeetCode activity evaluation", leet_code_features["evaluation"])
 
     pdf.add_page()
     # ============================

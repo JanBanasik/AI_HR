@@ -17,7 +17,9 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed", leetcodeUserNa
     missingFeatures = get_missing_features(justification, "CV/example.json")
     leetcodeFeatures = get_user_features(leetcodeUserName, outputJson)
 
-    print(leetcodeFeatures)
+
+    with open(f"{outputJson}/leet_code_features.json", "w") as f:
+        json.dump({"leet_code_features": leetcodeFeatures}, f)
     with open(f"{outputJson}/missing_features.json", "w") as f:
         json.dump({"missing_features": missingFeatures}, f)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
@@ -44,5 +46,10 @@ if __name__ == "__main__":
     with open(f"data/{personName}/missing_features.json") as f4:
         missing_features = json.load(f4)
 
-    generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification,
+
+
+    with open(f"data/{personName}/leet_code_features.json", "w") as f5:
+        leet_code_features = json.load(f5)
+
+    generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification, leet_code_features,
                         name_path=f"data/{personName}")
