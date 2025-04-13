@@ -122,7 +122,7 @@ def scrape_github_user_info(username: str, top_n: int = 3, months: int = 6) -> d
 
 # Example usage
 if __name__ == "__main__":
-    username = "Kubapatimat"
+    username = "antoniopater"
     info = scrape_github_user_info(username, top_n=10, months=3)
 
     with open("data.json", "w") as f:

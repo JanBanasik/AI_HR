@@ -8,7 +8,6 @@ import os
 import matplotlib.pyplot as plt
 
 
-
 def getResultsForGivenPrompt(prompt) -> str:
     load_dotenv()
     api_key = os.getenv("GEMINI_API_KEY")
@@ -39,7 +38,6 @@ def generate_profile_review(profile):
     return getResultsForGivenPrompt(prompt)
 
 
-
 def clean_html_to_text(html_content):
     """
     Usuwa tagi HTML z treści i formatuje tekst w bardziej przyjazny sposób.
@@ -54,6 +52,8 @@ def clean_html_to_text(html_content):
     text = re.sub(r'\n+', '\n', text).strip()
 
     return text
+
+
 class LeetcodeFetcher:
     def __init__(self, session_cookie, csrf_token):
         self.session_cookie = session_cookie
@@ -112,7 +112,8 @@ class LeetcodeFetcher:
             "avatar": data["profile"]["userAvatar"]
         }
 
-def save_profile_to_json(profile_data, filename="leetcode_profile.json"):
+
+def save_profile_to_json(profile_data, outputPath="leetcode_profile.json"):
     formatted_data = {
         "username": profile_data["username"],
         "ranking": profile_data["ranking"],
@@ -126,44 +127,18 @@ def save_profile_to_json(profile_data, filename="leetcode_profile.json"):
         "badges": profile_data["badges"],
         "avatar_url": profile_data["avatar"]
     }
-
-    with open(filename, "w", encoding="utf-8") as f:
+    outputPath = os.path.join(outputPath, "leetcode_profile.json")
+    with open(outputPath, "w", encoding="utf-8") as f:
         json.dump(formatted_data, f, indent=4, ensure_ascii=False)
 
-    print(f"✔️ Dane zapisane do {filename}")
+    print(f"✔️ Dane zapisane do {outputPath}")
 
 
-def plot_solved_problems(profile):
-    """
-    Generuje wykres słupkowy przedstawiający liczbę rozwiązań z podziałem na trudności.
-    """
-    solved = profile["solved"]
+def get_user_features(username, outputPath):
+    s = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfYXV0aF91c2VyX2lkIjoiNjc4NDQ1NyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjNjM2NkOWU2MjkwZDE0N2FjZGZjNDE3MDUzMTc2N2YwYmNhNzg0NDZjODJmODEwMTYwZjdhZDE0NTQ5NDZhMzMiLCJzZXNzaW9uX3V1aWQiOiIzOGI1OWVlMyIsImlkIjo2Nzg0NDU3LCJlbWFpbCI6Imphbi5qZXJ6eS5iYW5hc2lrQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiSmFuQmFuYXNpayIsInVzZXJfc2x1ZyI6IkphbkJhbmFzaWsiLCJhdmF0YXIiOiJodHRwczovL2Fzc2V0cy5sZWV0Y29kZS5jb20vdXNlcnMvYXZhdGFycy9hdmF0YXJfMTY5MDA2ODMxMS5wbmciLCJyZWZyZXNoZWRfYXQiOjE3NDQ0OTc5ODUsImlwIjoiMTk1LjE1MC4xOTIuMjUwIiwiaWRlbnRpdHkiOiIzM2QwZjI1N2E4MTdkMWNhNGM0MzgxYjg3ZjhhZDgzZiIsImRldmljZV93aXRoX2lwIjpbIjVhYjI0N2RkY2ZlN2ViMWI3NDczZGM2ZDM4MGQ2NzExIiwiMTk1LjE1MC4xOTIuMjUwIl0sIl9zZXNzaW9uX2V4cGlyeSI6MTIwOTYwMH0.hp2cagB21J6fLEU3_E6nHYlq2OGlPny9MbPwP8kBDU4"
+    fetcher = LeetcodeFetcher(
+        s,
+        "SfKWxwLiZB6yQt6AlxNXAzMRH1KhXFoOP8KPwom6R0XU5L765D7zCjTYf3rZDfN9")
 
-    # Przygotowanie danych
-    difficulties = ['Easy', 'Medium', 'Hard']
-    counts = [solved.get("Easy", 0), solved.get("Medium", 0), solved.get("Hard", 0)]
-
-    # Tworzenie wykresu
-    plt.figure(figsize=(8, 6))
-    plt.bar(difficulties, counts, color=['green', 'orange', 'red'])
-
-    # Dodanie tytułu i etykiet
-    plt.title(f"Rozwiązane zadania użytkownika {profile['username']}", fontsize=16)
-    plt.xlabel("Trudność zadania", fontsize=12)
-    plt.ylabel("Liczba rozwiązanych zadań", fontsize=12)
-
-    # Wyświetlenie wykresu
-    plt.show()
-
-
-s = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfYXV0aF91c2VyX2lkIjoiNjc4NDQ1NyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjNjM2NkOWU2MjkwZDE0N2FjZGZjNDE3MDUzMTc2N2YwYmNhNzg0NDZjODJmODEwMTYwZjdhZDE0NTQ5NDZhMzMiLCJzZXNzaW9uX3V1aWQiOiIzOGI1OWVlMyIsImlkIjo2Nzg0NDU3LCJlbWFpbCI6Imphbi5qZXJ6eS5iYW5hc2lrQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiSmFuQmFuYXNpayIsInVzZXJfc2x1ZyI6IkphbkJhbmFzaWsiLCJhdmF0YXIiOiJodHRwczovL2Fzc2V0cy5sZWV0Y29kZS5jb20vdXNlcnMvYXZhdGFycy9hdmF0YXJfMTY5MDA2ODMxMS5wbmciLCJyZWZyZXNoZWRfYXQiOjE3NDQ0OTc5ODUsImlwIjoiMTk1LjE1MC4xOTIuMjUwIiwiaWRlbnRpdHkiOiIzM2QwZjI1N2E4MTdkMWNhNGM0MzgxYjg3ZjhhZDgzZiIsImRldmljZV93aXRoX2lwIjpbIjVhYjI0N2RkY2ZlN2ViMWI3NDczZGM2ZDM4MGQ2NzExIiwiMTk1LjE1MC4xOTIuMjUwIl0sIl9zZXNzaW9uX2V4cGlyeSI6MTIwOTYwMH0.hp2cagB21J6fLEU3_E6nHYlq2OGlPny9MbPwP8kBDU4"
-fetcher = LeetcodeFetcher(
-    s,
-    "SfKWxwLiZB6yQt6AlxNXAzMRH1KhXFoOP8KPwom6R0XU5L765D7zCjTYf3rZDfN9")
-
-profile = fetcher.get_user_profile("JanBanasik")
-save_profile_to_json(profile)
-print(profile)
-
-print(generate_profile_review(profile))
-plot_solved_problems(profile)
+    profile = fetcher.get_user_profile(f"{username}")
+    save_profile_to_json(profile, outputPath)

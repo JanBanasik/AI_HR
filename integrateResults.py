@@ -5,16 +5,19 @@ import os
 from create_pdf import generate_pdf_report
 from CV.readCV_andReturn_justificationPDF import getResultsForPDFFile
 from candidate_missing_features import get_missing_features
+from LeetCode.LC_scraper import get_user_features
 
-def mergeResults(githubUsername, twitterId, personName="Unnamed"):
+def mergeResults(githubUsername, twitterId, personName="Unnamed", leetcodeUserName="Unnamed"):
     if not os.path.exists(f"data/{personName}/"):
         os.makedirs(f"data/{personName}/")
 
     outputJson = f"data/{personName}/"
-    score, justification = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson, personName)
+    score, justification = getResultsForPDFFile("CV/hacknarokCV.pdf", outputJson, personName)
     # TODO:
     missingFeatures = get_missing_features(justification, "CV/example.json")
+    leetcodeFeatures = get_user_features(leetcodeUserName, outputJson)
 
+    print(leetcodeFeatures)
     with open(f"{outputJson}/missing_features.json", "w") as f:
         json.dump({"missing_features": missingFeatures}, f)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
@@ -23,11 +26,10 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed"):
         json.dump({"justification": justification}, f)
 
 
-
-
 if __name__ == "__main__":
-    personName = "Jakub Halfar"
-    mergeResults(githubUsername="Kubapatimat", twitterId="person001", personName=personName)
+    personName = "Jan Banasik"
+    mergeResults(githubUsername="antoniopater", twitterId="person001", personName=personName, leetcodeUserName="JanBanasik")
+
     with open(f"data/{personName}/GitHub.json") as f1:
         github_info = json.load(f1)
     with open(f"data/{personName}/X.json") as f2:
@@ -42,6 +44,5 @@ if __name__ == "__main__":
     with open(f"data/{personName}/missing_features.json") as f4:
         missing_features = json.load(f4)
 
-
-
-    generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification, name_path = f"data/{personName}")
+    generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification,
+                        name_path=f"data/{personName}")
