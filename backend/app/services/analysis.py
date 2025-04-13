@@ -1,6 +1,6 @@
-from app.services.hr.cv.get_results import get_results_for_pdf_file
-from app.services.hr.github.review import get_results_for_given_user_name
-from app.services.hr.x.main import get_person_sentiment_evaluation
+from app.services.cv.get_results import get_results_for_pdf_file
+from app.services.github.review import get_results_for_given_user_name
+from app.services.x.main import get_person_sentiment_evaluation
 
 
 async def analyze_github(github_username: str) -> dict:

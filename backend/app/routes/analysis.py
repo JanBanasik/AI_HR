@@ -2,7 +2,9 @@ import asyncio
 
 from fastapi import APIRouter, UploadFile, File, Form
 
+from app.schemas.candidate import CandidateCreate
 from app.services.analysis import analyze_github, analyze_x_profile, analyze_pdf_file
+from app.services.candidate import CandidateService
 
 router = APIRouter(prefix="/analysis", tags=["Candidate Analysis"])
 
@@ -26,5 +28,8 @@ async def analyze_candidate(
         response["x"] = results[1]
     if file:
         response["cv"] = results[2]
+
+    candidate_service = CandidateService()
+    await candidate_service.create(CandidateCreate(**response))
 
     return response

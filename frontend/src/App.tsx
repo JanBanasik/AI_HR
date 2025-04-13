@@ -2,7 +2,7 @@ import {Route, Routes} from "react-router-dom"
 import {ThemeProvider} from "@/components/theme-provider"
 import {ModeToggle} from "@/components/mode-toggle"
 import Dashboard from "@/components/Dashboard"
-import CandidateDetail from "./components/CandidateDetail"
+import CandidateDetail from "@/components/CandidateDetail"
 
 function App() {
     return (

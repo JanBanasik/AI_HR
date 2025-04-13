@@ -1,15 +1,21 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
+
 class CandidateCreate(BaseModel):
-    first_name: str
-    last_name: str
+    cv: Optional[dict] = Field(None)
+    github: Optional[dict] = Field(None)
+    x: Optional[dict] = Field(None)
+
 
 class CandidateUpdate(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    cv: Optional[dict] = Field(None)
+    github: Optional[dict] = Field(None)
+    x: Optional[dict] = Field(None)
+
 
 class CandidateResponse(BaseModel):
     id: str
-    first_name: str
-    last_name: str
+    cv: Optional[dict] = Field(None)
+    github: Optional[dict] = Field(None)
+    x: Optional[dict] = Field(None)

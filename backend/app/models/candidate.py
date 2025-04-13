@@ -7,8 +7,9 @@ from app.models.base import PyObjectId
 
 class CandidateModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    first_name: str = Field(...)
-    last_name: str = Field(...)
+    cv: dict = Field(None)
+    github: dict = Field(None)
+    x: dict = Field(None)
 
     model_config = ConfigDict(
         populate_by_name=True,
