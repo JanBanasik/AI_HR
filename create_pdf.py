@@ -60,7 +60,7 @@ class PDFReport(FPDF):
             self.chapter_body(content)
 
 
-def generate_pdf_report(eval_info, github_reviews, resume_info, justification, match_score_path):
+def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info, justification, name_path):
     """
     Generates an aesthetically pleasing PDF report combining:
      - Evaluation info (scores, classification, explanations, summary)
@@ -93,12 +93,14 @@ def generate_pdf_report(eval_info, github_reviews, resume_info, justification, m
     image_width = 90
     page_width = pdf.w - 2 * pdf.l_margin  # Effective page width
     x_position = (page_width - image_width) / 2 + pdf.l_margin
-    pdf.image(match_score_path, x=x_position, y=pdf.get_y() + 5, w = image_width)
+    pdf.image(f"{name_path}/match_score.png", x=x_position, y=pdf.get_y() + 5, w = image_width)
 
     pdf.add_page()
+    pdf.add_section("Candidate's missing features", missing_features["missing_features"])
 
+    pdf.add_page()
     if "political_explanation" in eval_info:
-        pdf.add_section("Political Explanation", eval_info["political_explanation"])
+        pdf.add_section("X post evaluation", eval_info["political_explanation"])
 
     if "summary" in eval_info:
         pdf.add_section("Summary", eval_info["summary"])

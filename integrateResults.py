@@ -14,7 +14,9 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed"):
     score, justification = getResultsForPDFFile("CV/Antoni-3.pdf", outputJson, personName)
     # TODO:
     missingFeatures = get_missing_features(justification, "CV/example.json")
-    print(missingFeatures)
+
+    with open(f"{outputJson}/missing_features.json", "w") as f:
+        json.dump({"missing_features": missingFeatures}, f)
     twitterSentimentAnalysis = getPersonSentimentEvaluation(twitterId, outputJson)
     getResultsForGivenUserName(githubUsername, outputJson)
     with open(f"{outputJson}/justification.json", "w") as f:
@@ -37,4 +39,9 @@ if __name__ == "__main__":
     with open(f"data/{personName}/justification.json") as f3:
         justification = json.load(f3)
 
-    generate_pdf_report(twitter_info, github_info, cv_info, justification, match_score_path = f"data/{personName}/match_score.png")
+    with open(f"data/{personName}/missing_features.json") as f4:
+        missing_features = json.load(f4)
+
+
+
+    generate_pdf_report(twitter_info, github_info, missing_features, cv_info, justification, name_path = f"data/{personName}")

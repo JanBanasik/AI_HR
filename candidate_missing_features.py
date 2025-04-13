@@ -24,12 +24,10 @@ def get_missing_features(justification, jobDescriptionPath) -> str:
     job_desc = load_job_desc(jobDescriptionPath)
 
     prompt = (
-        f"""
-        Na podstawie podanego uzasadnienia, a także na podstawie wczytanych wymagań pracy, napisz czego brakuje kandydatowi
-        Jakich umiejętności zarówno twardych jak i miękkich 
+        f"""Based on the provided justification and the loaded job requirements, identify the candidate's missing skills, both hard and soft.
         
         f"Justification:\n{justification}\n\n"
-        f"Oferta pracy:\n{json.dumps(job_desc, ensure_ascii=False)}"
+        f"Job offer:\n{json.dumps(job_desc, ensure_ascii=False)}"
         """
     )
 
