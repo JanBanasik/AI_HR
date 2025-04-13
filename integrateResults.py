@@ -30,7 +30,7 @@ def mergeResults(githubUsername, twitterId, personName="Unnamed", leetcodeUserNa
 
 if __name__ == "__main__":
     personName = "Jan Banasik"
-    mergeResults(githubUsername="Kubapatimat", twitterId="person001", personName=personName, leetcodeUserName="JanBanasik")
+    mergeResults(githubUsername="Kubapatimat", twitterId="person002", personName=personName, leetcodeUserName="JanBanasik")
 
     with open(f"data/{personName}/GitHub.json") as f1:
         github_info = json.load(f1)

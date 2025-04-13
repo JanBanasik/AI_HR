@@ -43,7 +43,7 @@ class Visualizer:
         ax.set_xlabel("Opinion Stability")
         ax.set_ylabel("Calmness (1 - Aggression)")
         ax.set_title("Behavioral Quadrant: Stability vs Aggression")
-        ax.legend(loc='upper left')
+        # ax.legend(loc='upper left')
         plt.tight_layout()
         if save_path:
             plt.savefig(save_path)

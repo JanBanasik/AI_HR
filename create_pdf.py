@@ -109,7 +109,15 @@ def generate_pdf_report(eval_info, github_reviews, missing_features, resume_info
 
 
     pdf.add_page()
+    image_width = 70
+    x_position =  x_position = (page_width - image_width) / 2 + pdf.l_margin
+    pdf.image(f"{name_path}/political_quadrant.png", x=x_position, y=pdf.get_y() + 5, w = 70)
+    pdf.image(f"{name_path}/quadrant.png", x=x_position, y=pdf.get_y() + 85, w = 70)
+    pdf.image(f"{name_path}/team_fit.png", x=x_position, y=pdf.get_y() + 165, w = 70)
 
+
+
+    pdf.add_page()
     pdf.add_section("LeetCode activity evaluation", leet_code_features["review"])
 
     pdf.add_page()
