@@ -2,8 +2,13 @@
 
 CVision is an AI-powered web application designed to streamline the recruitment process. By automatically aggregating and analyzing data from GitHub, social media, and other online sources, CVision generates comprehensive candidate profiles and provides recruiters with actionable insights to make informed hiring decisions.
 
+## 🎥 Demo
 
-![CV Vision](logo.png)
+<p align="center">
+  <a href="https://youtu.be/V4Z31Cdvlxw">
+    <img src="https://img.youtube.com/vi/V4Z31Cdvlxw/0.jpg" alt="Zobacz demo na YouTube" width="640">
+  </a>
+</p>
 ## Table of Contents
 
 - [Project Overview](#Project-overview)
@@ -31,7 +36,9 @@ This project was developed during a hackathon, and the modern UI (see branch **0
 - **Customizable Reporting:** Offers recruiters the flexibility to tailor candidate insights based on specific parameters.
 
 ## Technologies
-
+<p align="center">
+  <img src="ścieżka/do/stack.png" alt="Stack technologiczny" width="600"/>
+</p>
 - **Frontend:** Developed using modern JavaScript frameworks (e.g., React).
 - **Backend:** Built on Python based services.
 - **Machine Learning:** Integrates AI/ML APIs (specifically Gemini 1.5 flash) for review generation.
