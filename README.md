@@ -9,7 +9,8 @@ CVision is an AI-powered web application designed to streamline the recruitment 
     <img src="https://img.youtube.com/vi/V4Z31Cdvlxw/0.jpg" alt="Zobacz demo na YouTube" width="640">
   </a>
 </p>
-## Table of Contents
+
+##Table of Contents
 
 - [Project Overview](#Project-overview)
 - [Features](#Features)
@@ -37,7 +38,7 @@ This project was developed during a hackathon, and the modern UI (see branch **0
 
 ## Technologies
 <p align="center">
-  <img src="ścieżka/do/stack.png" alt="Stack technologiczny" width="600"/>
+  <img src="assets/stack.png" alt="Stack technologiczny" width="600"/>
 </p>
 - **Frontend:** Developed using modern JavaScript frameworks (e.g., React).
 - **Backend:** Built on Python based services.
