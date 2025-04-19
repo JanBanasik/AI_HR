@@ -1,98 +1,149 @@
 # CVision
 
-CVision is an AI-powered web application designed to streamline the recruitment process. By automatically aggregating and analyzing data from GitHub, social media, and other online sources, CVision generates comprehensive candidate profiles and provides recruiters with actionable insights to make informed hiring decisions.
-
-## 🎥 Demo
+CVision is an AI-powered web application designed to streamline the recruitment process. It automatically aggregates and analyzes data from platforms like GitHub, LinkedIn, and LeetCode to generate comprehensive candidate profiles and provide recruiters with actionable insights.
 
 <p align="center">
   <a href="https://youtu.be/V4Z31Cdvlxw">
-    <img src="https://img.youtube.com/vi/V4Z31Cdvlxw/0.jpg" alt="Zobacz demo na YouTube" width="640">
+    <img src="https://img.youtube.com/vi/V4Z31Cdvlxw/0.jpg" alt="Watch demo on YouTube" width="640">
   </a>
 </p>
 
-##Table of Contents
+---
 
-- [Project Overview](#Project-overview)
-- [Features](#Features)
-- [Technologies](#Technologies)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [License](#License)
+## 📑 Table of Contents
 
-## Project Overview
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [License](#-license)
+- [Contact](#-contact)
 
-Recruiting in today’s competitive market requires sifting through massive amounts of candidate information across multiple platforms. CVision addresses this challenge by:
-- Automatically gathering data from various sources (e.g., GitHub, LeetCode, social media, attached resume).
-- Analyzing the data using AI and machine learning algorithms.
-- Creating detailed, easy-to-read candidate profiles that help recruiters quickly gauge the strengths and potential fit of candidates.
+---
 
-This project was developed during a hackathon, and the modern UI (see branch **03-new-ui**) was built with a focus on intuitive and user-friendly design.
+## 🧠 Overview
 
-## Features
+Recruitment in today’s competitive market involves processing large volumes of candidate data across multiple platforms. CVision addresses this challenge by:
 
-- **Automatic Candidate Profile Generation:** Seamlessly aggregates data from multiple online sources to build a comprehensive candidate profile.
-- **AI-Driven Analysis:** Utilizes machine learning techniques to evaluate candidate skills and potential.
-- **Modern and Responsive User Interface:** Developed using the latest UI principles to ensure a smooth user experience.
-- **Real-Time Data Integration:** Leverages APIs from platforms like GitHub and LeetCode to fetch up-to-date information.
-- **Customizable Reporting:** Offers recruiters the flexibility to tailor candidate insights based on specific parameters.
+- Automatically gathering candidate data from public sources (e.g., GitHub, LeetCode, LinkedIn, resumes),
+- Using AI to analyze coding activity and online presence,
+- Generating structured, readable profiles with key technical and behavioral insights.
 
-## Technologies
+CVision was developed during a hackathon with a strong focus on usability and real-time data-driven decisions.
+
+---
+
+## ✨ Features
+
+- **AI-Powered Candidate Profiles**  
+  Aggregates data and summarizes candidate skills, contributions, and strengths.
+
+- **Multiplatform Integration**  
+  Supports input from GitHub, LeetCode, LinkedIn, and resume files.
+
+- **LLM-Based Evaluation**  
+  Uses Gemini 1.5 Flash for AI-generated review summaries and skill extraction.
+
+- **Clean & Responsive UI**  
+  Built with modern frontend technologies and styled using Tailwind CSS.
+
+- **Recruiter-Focused Output**  
+  Optimized to reduce screening time and improve hiring quality.
+
+---
+
+## 🧰 Tech Stack
+
 <p align="center">
-  <img src="assets/stack.png" alt="Stack technologiczny" width="600"/>
+  <img src="assets/stack.png" alt="Technology stack" width="600"/>
 </p>
-- **Frontend:** Developed using modern JavaScript frameworks (e.g., React).
-- **Backend:** Built on Python based services.
-- **Machine Learning:** Integrates AI/ML APIs (specifically Gemini 1.5 flash) for review generation.
-- **API Integrations:** Connects with APIs of GitHub, LeetCode (and more in the future) to gather candidate data.
-- **UI/UX:** Intuitive UI on the highest level.
 
-## Installation
+- **Frontend:** React, TypeScript, Tailwind CSS  
+- **Backend:** FastAPI (Python)  
+- **ML/AI:** Gemini 1.5 Flash, PyTorch  
+- **Data Layer:** MongoDB  
+- **Other Tools:** LangChain, custom embedding pipelines
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) and npm installed on your machine.
-- (Optional) [Python](https://www.python.org/) with the required libraries if any Python-based functionality is used.
+- [Node.js](https://nodejs.org/)
+- [Python 3.10+](https://www.python.org/)
+- (Optional) Virtual environment for Python
 
-### Setup Steps
+### Setup
 
-1. **Clone the Repository:**
-
+1. **Clone the repository:**
+   Clone the repository to your local machine:
    ```bash
    git clone https://github.com/JanBanasik/AI_HR.git
    cd AI_HR
    ```
 
-    **Checkout the New UI Branch:**
-    ```bash
-    git checkout 03-new-ui
-    ```
+2. **Install backend dependencies (FastAPI):**
+   Navigate to the `backend` folder and install the required libraries:
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
 
-    **Install Dependencies:**
-    ```bash
-    npm install
-    ```
+3. **Run the backend (FastAPI):**
+   To run the FastAPI server, use the following command in the `backend` folder:
+   ```bash
+   uvicorn main:app --reload
+   ```
+   - `main` is the name of the file containing the FastAPI instance (`main.py`).
+   - `app` is the FastAPI application instance.
 
-    **Run the Application:**
-    ````bash
-    npm start
-    ````
-    **Access the Application:**
+4. **Install frontend dependencies (React):**
+   Navigate to the `frontend` folder and install the required packages:
+   ```bash
+   cd ../frontend
+   npm install
+   ```
 
-    Open your browser and go to http://localhost:3000.
+5. **Run the frontend (React):**
+   To run the React application, use the following command:
+   ```bash
+   npm start
+   ```
 
-### Usage
+6. **Testing:**
+   - The backend should be running on `http://localhost:8000`.
+   - The frontend should be running on `http://localhost:3000`.
 
-**Input Candidate Data:** The recruiter enters one or more URLs pointing to candidate profiles on platforms such as GitHub or LinkedIn.
+   If everything is set up correctly, the frontend should communicate with the backend.
 
-**Generate Profile:** CVision processes the input to compile a detailed profile based on the aggregated data.
+---
 
-**Review AI Analysis:** The application provides an AI-generated evaluation and recommendations, enabling recruiters to make faster, informed hiring decisions.
+Open your browser and navigate to: [http://localhost:3000](http://localhost:3000)
 
-### License
+---
 
-This project is licensed under the MIT License – see the LICENSE file for more details.
-Contact
+## 🧪 Usage
 
-For questions, suggestions, or collaboration opportunities, please reach out at [Filip Baciak](f.baciak@student.uw.edu.pl).
+1. **Input Candidate URLs**  
+   Paste links to GitHub, LinkedIn, LeetCode, or upload a resume.
 
+2. **Generate Profile**  
+   CVision fetches and analyzes public data, then builds a detailed profile.
 
+3. **Review AI Summary**  
+   The system presents an AI-generated summary with key highlights, skill clusters, and notes for recruiters.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📬 Contact
+
+For questions or collaboration opportunities, feel free to reach out:  
+**Filip Baciak** – [f.baciak@student.uw.edu.pl](mailto:f.baciak@student.uw.edu.pl)
