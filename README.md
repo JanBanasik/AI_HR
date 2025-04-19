@@ -145,5 +145,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📬 Contact
 
-For questions or collaboration opportunities, feel free to reach out:  
+For questions or collaboration opportunities, feel free to reach out:
+
 **Filip Baciak** – [f.baciak@student.uw.edu.pl](mailto:f.baciak@student.uw.edu.pl)
+
+**Jan Banasik** - [jan.jerzy.banasik@gmail.com](mailto:jan.jerzy.banasik@gmail.com)
