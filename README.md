@@ -150,3 +150,5 @@ For questions or collaboration opportunities, feel free to reach out:
 **Filip Baciak** – [f.baciak@student.uw.edu.pl](mailto:f.baciak@student.uw.edu.pl)
 
 **Jan Banasik** - [jan.jerzy.banasik@gmail.com](mailto:jan.jerzy.banasik@gmail.com)
+
+**Antoni Pater** - [antonipaterbusiness@gmail.com](mailto:antonipaterbusiness@gmail.com)
